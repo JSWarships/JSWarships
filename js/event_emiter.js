@@ -15,5 +15,3 @@ EventEmitter.prototype.emit = function(name, ...data) {
   if (!event) return;
   for (const listener of event) listener(...data);
 };
-
-module.exports = EventEmitter;
