@@ -1,0 +1,21 @@
+{
+  "name": "js-warships",
+  "version": "1.0.0",
+  "description": "Гра морський бій у варіаціях: для одного гравця, для двох гравців",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "start": "node main.js",
+    "type": "module"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JSWarships/JSWarships.git"
+  },
+  "author": "Roman Dotsenko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JSWarships/JSWarships/issues"
+  },
+  "homepage": "https://github.com/JSWarships/JSWarships#readme"
+}
