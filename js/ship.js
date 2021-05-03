@@ -7,23 +7,24 @@ const Vector = {
 
 class Ship
 {
-	constructor(size)
+	constructor( size )
 	{
 		this.localPositions = [];
 		this.size = size;
-	}
+	};
 
-    static DefaultShip = {
-        localPositions:[
-			{x: -1,
+	static DefaultShip = {
+		localPositions:
+		[{
+			x: -1,
 			y: -1
 		}],
-        size: -1
-    };
+        	size: -1
+	};
 
-    add_cell(cell_coord)
+	add_cell( cell_coord )
 	{
-		this.localPositions.push(cell_coord);
-	}
-}
+		this.localPositions.push ( cell_coord );
+	};
+};
 
