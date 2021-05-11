@@ -1,15 +1,22 @@
 'use strict';
 
-class Bot{
-    constructor(emiter){
+class Bot
+{
+    constructor( emiter )
+    {
         this.emiter = emiter;
-    }
-    start(){
-        this.emiter.on("PlayerAttacked", this.onPlayerAttacked);
+    };
+    
+    start ( )
+    {
+        this.emiter.on ( "PlayerAttacked", this.onPlayerAttacked );
         
-        this.emiter.emit("BotAttacked");
-    }
-    onPlayerAttacked() {
-        console.log("Bot attacked!");
-    }
-}
+        this.emiter.emit ( "BotAttacked" );
+    };
+    
+    onPlayerAttacked ( ) 
+    {
+        console.log ( "Bot attacked!" );
+    };
+    
+};
