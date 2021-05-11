@@ -1,20 +1,24 @@
 'use strict';
 
-class ShipGrid{
-    ships = [];
+class ShipGrid
+{
+    ships = [ ];
 
-    constructor(){
+    constructor( )
+    {
         this.ships[0] = Ship.DefaultShip;
     };
-    add_ship(ship){
-        this.ships[this.ships.size()] = ship;
-        this.ships[this.ships.size()] = DefaultShip;
+
+    add_ship( ship )
+    {
+        this.ships[ this.ships.size( ) ] = ship;
+        this.ships[ this.ships.size( ) ] = DefaultShip;
     };
     
-    add_ship_cell(cell, isFirst)
+    add_ship_cell( cell, isFirst )
     {
-        if(isFirst){
+        if( isFirst ){
             
-        }
-    }
+        };
+    };
 };
