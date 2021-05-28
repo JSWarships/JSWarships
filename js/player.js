@@ -38,7 +38,7 @@ const GridSettings =
             if( index == i ) return GridSettings [ shipSettings ];
             i++;
         };
-    };
+    }
 };
 
 const onPlayerClick = ( e ) =>
