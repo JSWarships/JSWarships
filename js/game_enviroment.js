@@ -258,6 +258,21 @@ class GameEnviroment
       Ships [ 1 ][ i ].drawKilled( );
     };
   };
+  
+  static shot ( x, y, player )
+  {
+    const cell = this.Cells[ player ][ x ][ y ];
+    switch ( cell.cell_type )
+    {
+      case 0: 
+      case 2: 
+      case 3: cell.cell_type = CellType.Missed; break;
+      case 1: cell.cell_type = CellType.Damaged; break;
+      case 4:
+      case 5: return 0;
+    }
+    return cell.cell_type();
+  }
 
 };
 
