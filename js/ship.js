@@ -28,12 +28,19 @@ class Ship
 				return ship_cell;
 			}
 		}	
-	}
+	};
 
-	kill_cell( cell_position )
+	kill_cell ( cell_position )
 	{
 		const cell = this.get_cell( cell_position );
 		cell.cell_type = CellType.Damaged;
+		this.is_alive - this.check_alive ( );
+	};
+
+	check_alive ( )
+	{
+		const filtered = this.cells.filter ( ( ship_cell ) => ship_cell.cell_type != CellType.Damaged );
+		return filtered.length > 0;
 	};
 
 	get_cell_type = ( cell_position ) => this.get_cell( cell_position ).cell_type;

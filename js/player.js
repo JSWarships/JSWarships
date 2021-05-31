@@ -60,14 +60,15 @@ const fill_by_player = ( cell ) =>
             player1.finish_filling_grid( );
             return;
         };
-        console.log(cell.cell_type);
+
         if( cell.cell_type == CellType.Occupied )
         {
             console.warn ( "Occupied" );
             return;
         };
         
-        const add_cell_to_enviroment = (last_cell_position) => {
+        const add_cell_to_enviroment = ( last_cell_position ) => 
+        {
             player1.currentShip.add_cell ( cell );
             GameEnviroment.add_ship_cell ( cell, player1.player_type, last_cell_position );
             GameEnviroment.drawRectangleWithPosition ( cell.local_position, player1.player_type, ship_alive_color );
@@ -106,7 +107,6 @@ const fill_by_player = ( cell ) =>
             }
             player1.currentShipIndex++;
             player1.currentShipNumber = 0;
-            console.log ( "next type" );
             GameUI.placeShipChange (  player1.currentShipIndex );
         };
     };
@@ -121,8 +121,15 @@ const fill_random = ( ) =>
 const onPlayerClick = ( mouse_pos ) =>
 {
         let cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player1 );
-        
-        
+
+        if ( !cell ) return;
+        if ( player1.isFillingByPlayer )
+        {
+            fill_by_player ( cell );
+        }
+        else
+        {
+            //here is some kind of attack we don't have
         switch (game_state)
         {
             case GameState.FillingGrid:
@@ -141,6 +148,7 @@ const onPlayerClick = ( mouse_pos ) =>
                 if ( !cell ) return;
                 player1.attack_cell ( cell.local_position );
                 break;
+
         }
         
         //this.grid.add_ship ( new Ship ( cell.local_position, ) );

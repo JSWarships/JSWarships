@@ -2,6 +2,10 @@
 
 class GameUI
 {
+    static themeswitch ( )
+    {
+        document.body.classList.toggle ( 'dark-theme' );
+    }
     static textInit ( )
     {
         this.turn = document.getElementsByClassName( 'turn' )[0];
