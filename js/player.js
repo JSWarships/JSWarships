@@ -12,7 +12,8 @@ const GameState =
     Fighting: 1
 };
 
-const shipAliveColor = "blue";
+const ship_alive_color = "blue";
+const max_ship_decks = 4;
 
 const GridSettings = 
 {
@@ -69,7 +70,7 @@ const fill_by_player = ( cell ) =>
         const add_cell_to_enviroment = (last_cell_position) => {
             player1.currentShip.add_cell ( cell );
             GameEnviroment.add_ship_cell ( cell, player1.player_type, last_cell_position );
-            GameEnviroment.drawRectangleWithPosition ( cell.local_position, player1.player_type, shipAliveColor );
+            GameEnviroment.drawRectangleWithPosition ( cell.local_position, player1.player_type, ship_alive_color );
         };
 
         if( !player1.currentShip )
@@ -98,6 +99,11 @@ const fill_by_player = ( cell ) =>
         
         if ( player1.currentShipNumber == currShipType.numberOfShips )
         {
+            if ( player1.currentShipIndex == max_ship_decks - 1 )
+            {
+                player1.finish_filling_grid ( );
+                return;
+            }
             player1.currentShipIndex++;
             player1.currentShipNumber = 0;
             console.log ( "next type" );
@@ -114,12 +120,13 @@ const fill_random = ( ) =>
 
 const onPlayerClick = ( mouse_pos ) =>
 {
-        const cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, player1.player_type );
+        let cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player1 );
         
-        if ( !cell ) return;
+        
         switch (game_state)
         {
-            case GameState.FillingGrid: 
+            case GameState.FillingGrid:
+                if ( !cell ) return;
                 if( player1.isFillingByPlayer )
                 {
                     fill_by_player( cell );
@@ -130,11 +137,12 @@ const onPlayerClick = ( mouse_pos ) =>
                 }
                 break;
             case GameState.Fighting:
-                player1.attack_cell ( cell );
+                cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player2 );
+                if ( !cell ) return;
+                player1.attack_cell ( cell.local_position );
                 break;
         }
         
-
         //this.grid.add_ship ( new Ship ( cell.local_position, ) );
         //GameEnviroment.drawPoint ( cell.local_position.x, cell.local_position.y, PlayerType.Player2, 'black' );
 };
@@ -162,7 +170,7 @@ class Player
         this.fillGridByPlayer( );
     };
 
-    attack_cell ( )
+    attack_cell ( cell_position )
     {
         this.emiter.emit ( "PlayerAttacked", cell_position );
     }
