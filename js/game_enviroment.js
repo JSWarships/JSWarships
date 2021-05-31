@@ -100,7 +100,7 @@ class GameEnviroment
     ctx.closePath( );
   };
 
-  static drawRectangleWithPosition = ( position ,player, color ) => 
+  static drawRectangleWithPosition = ( position, player, color ) => 
   {
     ctx.beginPath( );
     ctx.fillStyle = 'black';

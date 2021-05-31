@@ -10,6 +10,22 @@ class GameUI
     {
         this.turn.innerHTML = text;
     }
+    static placeShipInit ( )
+    {
+        this.place = document.createElement ( 'h3' );
+            this.place.className = 'place';
+            this.place.innerText = 'Place ship length 1';
+        document.body.appendChild ( this.place );
+    }
+    static placeShipChange ( len )
+    {
+        this.place.innerText = this.place.innerText.slice ( 0, this.place.innerText.length - 1 );
+        this.place.innerText += ' ' + ( len + 1 );
+    }
+    static placeShipHide ( )
+    {
+        this.place.style.display = 'none';
+    }
     static startButtons ( )
     {
         this.textInit ( );
