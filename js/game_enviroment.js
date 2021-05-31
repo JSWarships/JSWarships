@@ -289,6 +289,7 @@ class GameEnviroment
     cell.cell_type = CellType.Missed;
     let result = "Missed";
     // рисуем крестик
+    // и нолик заодно
     return result;
   };
   
