@@ -61,23 +61,27 @@ const onPlayerClick = ( e ) =>
                 console.warn ( "Occupied" );
                 return;
             };
-
-            if( !player1.currentShip && cell.cell_type == CellType.Empty )
-            {
-                player1.currentShip = new Ship ( currShipType.shipSize );
-                player1.currentShip.add_cell ( cell.localPosition );
+            
+            const add_cell_to_enviroment = (last_cell_position) => {
+                player1.currentShip.add_cell ( cell );
                 GameEnviroment.add_ship_cell ( cell.localPosition, player1.player_type, null );
                 GameEnviroment.drawRectangleWithPosition ( cell.localPosition, player1.player_type, shipAliveColor );
             };
 
-            if ( !player1.currentShip ) return;
+            if( !player1.currentShip )
+            {
+                if( cell.cell_type == CellType.Empty )
+                {
+                    player1.currentShip = new Ship ( currShipType.shipSize );
+                    add_cell_to_enviroment(null);
+                }
+                else return;
+            };
             
             if ( cell.cell_type == CellType.Potential )
             {
                 const cels_in_ship = player_ship.localPositions.length;
-                GameEnviroment.add_ship_cell ( cell.localPosition, player1.player_type, player_ship.localPositions [cels_in_ship - 1] );
-                player1.currentShip.add_cell ( cell.localPosition );
-                GameEnviroment.drawRectangleWithPosition ( cell.localPosition, player1.player_type, shipAliveColor );
+                add_cell_to_enviroment(player_ship.localPositions [cels_in_ship - 1]);
             };
             
             if ( player1.currentShip.localPositions.length == currShipType.shipSize )
@@ -94,8 +98,13 @@ const onPlayerClick = ( e ) =>
                 player1.currentShipNumber = 0;
                 console.log ( "next type" );
             };
+            if( !currShipType.shipSize )
+        {
+            player1.finish_filling_grid( );
+            return;
         };
-
+        };
+        
         //this.grid.add_ship ( new Ship ( cell.localPosition, ) );
         //GameEnviroment.drawPoint ( cell.localPosition.x, cell.localPosition.y, PlayerType.Player2, 'black' );
 };
@@ -139,3 +148,5 @@ class Player
         console.log ( "Bot attacked!" );
     };
 };
+
+//Pomenyat onClick dlya dwoih sostoyaniy
