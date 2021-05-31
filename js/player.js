@@ -93,10 +93,11 @@ const fill_by_player = ( cell ) =>
         if ( player1.currentShip.cells.length == currShipType.shipSize )
         {
             player1.currentShipNumber++;
-            console.log ( "refreshed" );
+            GameEnviroment.add_ship(PlayerType.Player1, player1.currentShip);
             GameEnviroment.refresh_sea ( player1.player_type );
+            console.log ( "refreshed" );
             player1.currentShip = null;
-        } ;
+        };
         
         if ( player1.currentShipNumber == currShipType.numberOfShips )
         {

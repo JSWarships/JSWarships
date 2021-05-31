@@ -12,10 +12,16 @@
     "type": "git",
     "url": "git+https://github.com/JSWarships/JSWarships.git"
   },
-  "author": "Roman Dotsenko, Olesia Moshenskaya",
+  "author": "Roman Dotsenko, Moshenskaya Olesya, Marinich Olesya, Ionova Julia",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/JSWarships/JSWarships/issues"
   },
-  "homepage": "https://github.com/JSWarships/JSWarships#readme"
+  "homepage": "https://github.com/JSWarships/JSWarships#readme",
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.27.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "2.3.0"
+  }
 }

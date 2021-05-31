@@ -51,6 +51,7 @@ class Cell
 class GameEnviroment
 {
   static Cells = [ [ ] ];  
+  static Ships = [ [ ] ];  
   
   static draw_grid ( size )
   {
@@ -87,6 +88,11 @@ class GameEnviroment
     };
     return null;
   };
+
+  static add_ship ( player, ship ) 
+  {
+    this.Ships[player].push ( ship );
+  }
 
   static drawRectangle = ( i, j, player, color ) => 
   {
