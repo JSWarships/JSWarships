@@ -101,6 +101,7 @@ const fill_by_player = ( cell ) =>
             player1.currentShipIndex++;
             player1.currentShipNumber = 0;
             console.log ( "next type" );
+            GameUI.placeShipChange (  player1.currentShipIndex );
         };
     };
 };
