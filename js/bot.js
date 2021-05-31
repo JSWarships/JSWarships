@@ -9,7 +9,7 @@ class Bot
 
     start ( )
     {
-        this.lastAttacked = null;
+        this.lastAttacked = undefined;
         this.emiter.on ( "PlayerAttacked", this.onPlayerAttacked );
     };
     

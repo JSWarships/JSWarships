@@ -53,14 +53,15 @@ const fill_by_player = ( cell ) =>
             player1.finish_filling_grid( );
             return;
         };
-        console.log(cell.cell_type);
+
         if( cell.cell_type == CellType.Occupied )
         {
             console.warn ( "Occupied" );
             return;
         };
         
-        const add_cell_to_enviroment = (last_cell_position) => {
+        const add_cell_to_enviroment = ( last_cell_position ) => 
+        {
             player1.currentShip.add_cell ( cell );
             GameEnviroment.add_ship_cell ( cell, player1.player_type, last_cell_position );
             GameEnviroment.drawRectangleWithPosition ( cell.localPosition, player1.player_type, shipAliveColor );
@@ -94,7 +95,6 @@ const fill_by_player = ( cell ) =>
         {
             player1.currentShipIndex++;
             player1.currentShipNumber = 0;
-            console.log ( "next type" );
             GameUI.placeShipChange (  player1.currentShipIndex );
         };
     };
@@ -105,9 +105,13 @@ const onPlayerClick = ( e ) =>
         const cell = GameEnviroment.findClickedCell ( e.pageX, e.pageY, player1.player_type );
         
         if ( !cell ) return;
-        if(player1.isFillingByPlayer)
+        if ( player1.isFillingByPlayer )
         {
-            fill_by_player( cell );
+            fill_by_player ( cell );
+        }
+        else
+        {
+            //here is some kind of attack we don't have
         }
         //this.grid.add_ship ( new Ship ( cell.localPosition, ) );
         //GameEnviroment.drawPoint ( cell.localPosition.x, cell.localPosition.y, PlayerType.Player2, 'black' );

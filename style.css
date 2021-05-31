@@ -1,24 +1,5 @@
-.canvas{
-    position: absolute;
-    margin-top: 150px;
-    margin-left: 400px;
-    opacity: 0;
-    visibility: hidden;
+* {
     transition: 0.6s;
-}
-
-h2 {
-    color: blue;
-    font-size: 50px;
-    position: absolute;
-    width: 100%;
-    text-align: center;
-}
-.place {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 100px;
 }
 
 body {
@@ -31,6 +12,66 @@ body.dark-theme {
     background-color: black;
 }
 
+.canvas {
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 400px;
+    opacity: 0;
+    visibility: hidden;
+}
+
+.svgcont {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    top: 5px;
+}
+
+.circle {
+    padding: 7px;
+    background-color: aqua;
+    border-radius: 50%;
+}
+body.dark-theme .circle {
+    background-color: aquamarine;
+}
+.circle:hover {
+    background-color: aquamarine;
+    cursor: pointer;
+}
+body.dark-theme .circle:hover {
+    background-color: aqua;
+}
+
+.themetoggle {
+    width: 30px;
+    height: 30px;
+}
+
+h2 {
+    color: blue;
+    font-size: 50px;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+    top: 50px;
+}
+body.dark-theme h2 {
+    color: aliceblue;
+}
+
+body.dark-theme h3 {
+    color: aqua;
+}
+
+.place {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 100px;
+}
+
 .container {
     display: inline-flex;
     width: 100%;
@@ -38,16 +79,23 @@ body.dark-theme {
     position: absolute;
     top: 20%;
 }
+
 .btn {
     margin: 10px;
     border: 1px solid blue;
     padding: 25px 40px;
     font-size: 25px;
-    transition: 1s;
 }
 .btn:hover {
     cursor: pointer;
-    transition: 1s;
     color: white;
     background-color: blue;
+}
+body.dark-theme .btn {
+    border: 1px solid aliceblue;
+    color: aliceblue;
+}
+body.dark-theme .btn:hover {
+    color: blue;
+    background-color: aliceblue;
 }
