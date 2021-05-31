@@ -21,8 +21,8 @@ class Bot
             let x, y;
             while ( true )
             {
-                x = Math.random ( grid_size );
-                y = Math.random ( grid_size );
+                x = Math.floor(Math.random() * grid_size);
+                y = Math.floor(Math.random() * grid_size);
                 if ( GameEnviroment.Cells[ player1.player_type ][ x ][ y ].cell_type < 4 ) break; //checking if we hadn't already shotted
             }
             const hit = GameEnviroment.shot ( x, y, player1.player_type );
@@ -74,17 +74,17 @@ class Bot
             else
             {
                 let potentialVector, x, y;
-                if ( Math.random ( 2 ) )
+                if ( Math.random ( 2 ) >= 0.5 )
                 {
                     potentialVector = 'Vertical';
-                    if ( Math.random ( 2 ) ) y = PrevCoords [ 0 ] [ 1 ]++;
+                    if ( Math.random ( 2 ) >= 0.5 ) y = PrevCoords [ 0 ] [ 1 ]++;
                     else  y = PrevCoords [ 0 ] [ 1 ]--;
                     x = PrevCoords [ 0 ] [ 0 ];
                 }
                 else 
                 {
                     potentialVector = 'Horizontal';
-                    if ( Math.random ( 2 ) ) x = PrevCoords [ 0 ] [ 0 ]++;
+                    if ( Math.random ( 2 ) >= 0.5 ) x = PrevCoords [ 0 ] [ 0 ]++;
                     else  x = PrevCoords [ 0 ] [ 0 ]--;
                     y = PrevCoords [ 0 ] [ 1 ];
                 }
