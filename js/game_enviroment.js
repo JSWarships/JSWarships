@@ -53,6 +53,12 @@ class GameEnviroment
   static Cells = [ [ ] ];  
   static Ships = [ [ ] ];  
   
+  static checkLose ( player )
+  {
+    const filtered = Ships[ player ].filter ( ship => ship.is_alive );
+    return filtered == 0;
+  };
+
   static draw_grid ( size )
   {
     this.clearSea ( );
