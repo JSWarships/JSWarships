@@ -150,11 +150,11 @@ const onPlayerClick = ( mouse_pos ) =>
                 break;
 
         }
-        
+        };
         //this.grid.add_ship ( new Ship ( cell.local_position, ) );
         //GameEnviroment.drawPoint ( cell.local_position.x, cell.local_position.y, PlayerType.Player2, 'black' );
-};
 
+};
 class Player
 {
     constructor ( emiter, player_type )
