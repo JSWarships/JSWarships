@@ -119,7 +119,7 @@ class Player
         window.addEventListener ( 'click', onPlayerClick, false );
         this.grid = new ShipGrid( );
         console.log ( "Player initiated!" );
-
+        GameUI.textDrawer ( "Player, place your ships!" ); 
         this.fillGridByPlayer( );
     };
 

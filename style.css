@@ -1,17 +1,41 @@
 .canvas{
     position: absolute;
-    margin-top: 10%;
-    margin-left: 28%;
+    margin-top: 150px;
+    margin-left: 400px;
+    display: none;
 }
+
 h2 {
+    color: blue;
+    font-size: 50px;
+    position: absolute;
+    width: 100%;
     text-align: center;
-    margin-top: 5%;
 }
+
 body {
     background-color: aliceblue;
     padding: 0;
     margin: 0;
+    font-family: 'Indie Flower', cursive;
 }
 body.dark-theme {
     background-color: black;
+}
+
+.container {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+    position: absolute;
+    top: 20%;
+}
+.btn {
+    margin: 10px;
+    border: 1px solid blue;
+    padding: 25px;
+    font-size: 25px;
+}
+.btn:hover {
+    cursor: pointer;
 }
