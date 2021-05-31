@@ -25,6 +25,10 @@ class Bot
             }
             
         }
+        else 
+        {
+
+        }
         this.emiter.emit ( "BotAttacked" );
         console.log ( "Bot attacked!" );
     };
@@ -35,6 +39,4 @@ class Bot
     1. Ships random placing on start
     2. RandomAttack method
     3. LogicAttack method
-    4. Roma huesos
-
 */

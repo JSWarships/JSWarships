@@ -49,7 +49,7 @@ const onPlayerClick = ( e ) =>
         if( player1.isFillingByPlayer )
         {
             const currShipType = GridSettings.getShip ( player1.currentShipIndex );
-            
+
             if( !currShipType.shipSize )
             {
                 player1.finish_filling_grid( );
@@ -97,12 +97,14 @@ const onPlayerClick = ( e ) =>
                 player1.currentShipIndex++;
                 player1.currentShipNumber = 0;
                 console.log ( "next type" );
+                GameUI.placeShipChange ( player1.currentShipIndex );
             };
+
             if( !currShipType.shipSize )
-        {
-            player1.finish_filling_grid( );
-            return;
-        };
+            {
+              player1.finish_filling_grid( );
+              return;
+            };
         };
         
         //this.grid.add_ship ( new Ship ( cell.localPosition, ) );
@@ -128,6 +130,7 @@ class Player
         this.grid = new ShipGrid( );
         console.log ( "Player initiated!" );
         GameUI.textDrawer ( "Player, place your ships!" ); 
+        GameUI.placeShipInit ( );
         this.fillGridByPlayer( );
     };
 
@@ -140,6 +143,7 @@ class Player
     {
         console.log ( "Filling is finished, starting the game..." );
         GameUI.textDrawer ( "Starting the game..." );
+        GameUI.placeShipHide ( );
         this.isFillingByPlayer = false;
     };
 
