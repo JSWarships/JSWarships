@@ -53,6 +53,12 @@ class GameEnviroment
   static Cells = [ [ ] ];  
   static Ships = [ [ ] ];  
   
+  static checkLose ( player )
+  {
+    const filtered = Ships[ player ].filter ( ship => ship.is_alive );
+    return filtered == 0;
+  };
+
   static draw_grid ( size )
   {
     this.clearSea ( );
@@ -283,6 +289,7 @@ class GameEnviroment
     cell.cell_type = CellType.Missed;
     let result = "Missed";
     // рисуем крестик
+    // и нолик заодно
     return result;
   };
   

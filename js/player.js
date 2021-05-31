@@ -188,6 +188,7 @@ class Player
         GameUI.placeShipHide ( );
         game_state = GameState.Fighting;
         this.isFillingByPlayer = false;
+        bot.onPlayerAttacked();
     };
 
     onBotAttacked( ) 
