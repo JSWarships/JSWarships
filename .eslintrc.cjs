@@ -10,7 +10,7 @@ module.exports = {
         "ecmaVersion": 12
     },
     "rules": {
-        "accessor-pairs": "error",
+        "accessor-pairs": "warn",
         "array-bracket-newline": "error",
         "array-bracket-spacing": [
             "error",
