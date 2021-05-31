@@ -34,10 +34,10 @@ class Bot
         }
         else 
         {
+            const PrevCoords = this.lastAttacked.coords;
             if ( this.lastAttacked.vector )
             {
                 let x, y;
-                const PrevCoords = this.lastAttacked.coords;
                 const len = PrevCoords.length;
                 switch ( this.lastAttacked.vector )
                 {
@@ -73,7 +73,34 @@ class Bot
             }
             else
             {
-
+                let potentialVector, x, y;
+                if ( Math.random ( 2 ) )
+                {
+                    potentialVector = 'Vertical';
+                    if ( Math.random ( 2 ) ) y = PrevCoords [ 0 ] [ 1 ]++;
+                    else  y = PrevCoords [ 0 ] [ 1 ]--;
+                    x = PrevCoords [ 0 ] [ 0 ];
+                }
+                else 
+                {
+                    potentialVector = 'Horizontal';
+                    if ( Math.random ( 2 ) ) x = PrevCoords [ 0 ] [ 0 ]++;
+                    else  x = PrevCoords [ 0 ] [ 0 ]--;
+                    y = PrevCoords [ 0 ] [ 1 ];
+                }
+                const hit = GameEnviroment.shot ( x, y, player1.player_type );
+                switch ( hit )
+                {
+                    case 'Damaged':
+                        this.lastAttacked.coords.push ( [ x, y ] );
+                        this.lastAttacked.vector = potentialVector;
+                        break;
+                    case 'Aimed':
+                        this.lastAttacked = null;
+                        break;
+                    default:
+                        break;
+                };
             }
         }
         this.emiter.emit ( "BotAttacked" );
