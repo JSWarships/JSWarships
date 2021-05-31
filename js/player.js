@@ -53,7 +53,7 @@ const fill_by_player = ( cell ) =>
             player1.finish_filling_grid( );
             return;
         };
-        
+        console.log(cell.cell_type);
         if( cell.cell_type == CellType.Occupied )
         {
             console.warn ( "Occupied" );
