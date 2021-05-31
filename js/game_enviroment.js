@@ -143,11 +143,15 @@ class GameEnviroment
     else
     {
       const difference_vector = new Vector2 ( x - last_cell_position.x, y - last_cell_position.y );
+      console.log(last_cell_position );
+      console.log(x + difference_vector.x );
       if ( is_in_bounds ( x + difference_vector.x, y + difference_vector.y ) )
       {
         if ( this.Cells [ player ][ x + difference_vector.x ][ y + difference_vector.y ].cell_type == CellType.Empty )
         {
           this.Cells [ player ][ x + difference_vector.x ][ y + difference_vector.y ].cell_type = CellType.Potential;
+         
+          
         };
       };
       this.surround_cell ( x, y, player );

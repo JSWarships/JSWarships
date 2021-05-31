@@ -79,7 +79,7 @@ const fill_by_player = ( cell ) =>
         if ( cell.cell_type == CellType.Potential )
         {
             const cels_in_ship = player_ship.cells.length;
-            add_cell_to_enviroment(player_ship.cells [cels_in_ship - 1]);
+            add_cell_to_enviroment(player_ship.cells [cels_in_ship - 1].localPosition);
         };
         
         if ( player1.currentShip.cells.length == currShipType.shipSize )
