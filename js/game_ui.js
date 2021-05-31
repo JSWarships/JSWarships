@@ -30,7 +30,9 @@ class GameUI
     }
     static showGrid ( )
     {
-        document.getElementsByClassName ( 'canvas' )[0].style.display = 'block';
+        const canvas = document.getElementsByClassName ( 'canvas' )[0];
+        canvas.style.visibility = 'visible';
+        canvas.style.opacity = '1';
     }
 }
 

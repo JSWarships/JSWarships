@@ -14,6 +14,8 @@ function PlayWithBot (  )
 {
     GameUI.startButtonsHide ( );
     GameEnviroment.draw_grid ( grid_size );
-    player1.start ( );
-    bot.start ( );
+    setTimeout ( ( ) => {
+        player1.start ( );
+        bot.start ( );
+    }, 0 ); 
 }
