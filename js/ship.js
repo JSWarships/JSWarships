@@ -4,7 +4,7 @@ const Vector = {
 	Horizontal: 0,
 	Vertical: 1
 };
-//Переписать шип на целлс хранить состояния и состояние уничтоженый или нет
+
 class Ship
 {
 	constructor ( size )
