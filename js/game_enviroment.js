@@ -32,13 +32,14 @@ const CellType =
   Occupied: 1,
   Blocked : 2,
   Potential: 3,
-  Hidden : 4
+  Missed: 4,
+  Damaged: 5
 };
 
 class Cell
 {
   
-  constructor( x, y, player )
+  constructor ( x, y, player )
   {
     this.position = new Vector2 ( player * playerMargin + x * dxy + deltaVector.x, y * dxy + deltaVector.y );
     this.localPosition = new Vector2 ( x, y );
@@ -99,7 +100,7 @@ class GameEnviroment
     ctx.closePath( );
   };
 
-  static drawRectangleWithPosition = (position ,player, color) => 
+  static drawRectangleWithPosition = ( position ,player, color ) => 
   {
     ctx.beginPath( );
     ctx.fillStyle = 'black';
@@ -131,11 +132,11 @@ class GameEnviroment
     };
   };
 
-  static add_ship_cell( position, player, first_cell )
+  static add_ship_cell ( position, player, first_cell )
   {
     const x = position.x, y = position.y;
     this.Cells [ player ][ x ][ y ].cell_type = CellType.Occupied;
-    if ( first_cell == null )
+    if ( !first_cell ) 
     {
       this.setSquearePotential(x, y, player);
     } 
@@ -149,7 +150,7 @@ class GameEnviroment
           this.Cells [ player ][ x + difference_vector.x ][ y + difference_vector.y ].cell_type = CellType.Potential;
         };
       };
-      this.surround_cell(x, y, player);
+      this.surround_cell ( x, y, player );
     };
     for ( let i = -1; i < 2; i+=2 )
     {
