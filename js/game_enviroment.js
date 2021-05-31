@@ -132,17 +132,17 @@ class GameEnviroment
     };
   };
 
-  static add_ship_cell ( position, player, first_cell )
+  static add_ship_cell ( cell, player, last_cell_position )
   {
-    const x = position.x, y = position.y;
+    const x = cell.localPosition.x, y = cell.localPosition.y;
     this.Cells [ player ][ x ][ y ].cell_type = CellType.Occupied;
-    if ( !first_cell ) 
+    if ( !last_cell_position ) 
     {
       this.setSquearePotential(x, y, player);
     } 
     else
     {
-      const difference_vector = new Vector2 ( x - first_cell.x, y - first_cell.y );
+      const difference_vector = new Vector2 ( x - last_cell_position.x, y - last_cell_position.y );
       if ( is_in_bounds ( x + difference_vector.x, y + difference_vector.y ) )
       {
         if ( this.Cells [ player ][ x + difference_vector.x ][ y + difference_vector.y ].cell_type == CellType.Empty )
