@@ -64,7 +64,7 @@ const onPlayerClick = ( e ) =>
             
             const add_cell_to_enviroment = (last_cell_position) => {
                 player1.currentShip.add_cell ( cell );
-                GameEnviroment.add_ship_cell ( cell.localPosition, player1.player_type, null );
+                GameEnviroment.add_ship_cell ( cell.localPosition, player1.player_type, last_cell_position );
                 GameEnviroment.drawRectangleWithPosition ( cell.localPosition, player1.player_type, shipAliveColor );
             };
 
