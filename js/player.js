@@ -33,20 +33,19 @@ const GridSettings =
     getShip: ( index ) =>
     {
         let i = 0;
-        for( let shipSettings in GridSettings )
+        for ( let shipSettings in GridSettings )
         {
-            if( index == i ) return GridSettings [ shipSettings ];
+            if ( index == i ) return GridSettings [ shipSettings ];
             i++;
         };
-    };
+    }
 };
 
 const onPlayerClick = ( e ) =>
 {
         const cell = GameEnviroment.findClickedCell ( e.pageX, e.pageY, player1.player_type );
         const player_ship = player1.currentShip;
-        if ( cell == null ) return;
-
+        if ( !cell ) return;
         if( player1.isFillingByPlayer )
         {
             const currShipType = GridSettings.getShip ( player1.currentShipIndex );
