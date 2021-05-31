@@ -21,7 +21,7 @@ class Bot
             while ( true )
             {
                 coords = [ Math.random ( grid_size ), Math.random ( grid_size ) ];
-                if ( GameEnviroment.Cells[ 1 ][ coords[0] ][ coords[1] ].cell_type < 4 ) break; //Refactor to make more understandable
+                if ( GameEnviroment.Cells[ 1 ][ coords[0] ][ coords[1] ].cell_type < 4 ) break; 
             }
             
         }
