@@ -18,5 +18,11 @@ function PlayWithBot (  )
     setTimeout ( ( ) => {
         player1.start ( );
         bot.start ( );
-    }, 0 ); 
+    }, 100 ); 
+}
+
+function GenerateRandomShips () 
+{
+    player1.isFillingByPlayer = false;
+    onPlayerClick(null);
 }

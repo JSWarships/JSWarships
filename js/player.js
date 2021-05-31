@@ -115,28 +115,20 @@ const fill_by_player = ( cell ) =>
 
 const fill_random = ( ) =>
 {
-    //fill random
-    finish_filling_grid( );
+    RandomPlacer.fillGridRandom(PlayerType.Player1);
+    player1.finish_filling_grid( );
 }
 
 const onPlayerClick = ( mouse_pos ) =>
 {
         let cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player1 );
-
-        if ( !cell ) return;
-        if ( player1.isFillingByPlayer )
-        {
-            fill_by_player ( cell );
-        }
-        else
-        {
-            //here is some kind of attack we don't have
+        //here is some kind of attack we don't have
         switch (game_state)
         {
             case GameState.FillingGrid:
-                if ( !cell ) return;
                 if( player1.isFillingByPlayer )
                 {
+                if ( !cell ) return;
                     fill_by_player ( cell );
                 }
                 else 
@@ -150,9 +142,8 @@ const onPlayerClick = ( mouse_pos ) =>
                 player1.attack_cell ( cell.local_position );
                 break;
 
-        }
-        };
-        //this.grid.add_ship ( new Ship ( cell.local_position, ) );
+            }
+            //this.grid.add_ship ( new Ship ( cell.local_position, ) );
         //GameEnviroment.drawPoint ( cell.local_position.x, cell.local_position.y, PlayerType.Player2, 'black' );
 
 };
@@ -161,7 +152,7 @@ class Player
     constructor ( emiter, player_type )
     {
         this.emiter = emiter;
-        this.isFillingByPlayer = true;
+        this.isFillingByPlayer = false;
         this.currentShipIndex = 0;
         this.currentShipNumber = 0;
         this.currentShip = null;
@@ -173,10 +164,11 @@ class Player
         this.emiter.on ( "BotAttacked", this.onBotAttacked );
         window.addEventListener ( 'click', onPlayerClick, false );
         this.grid = new ShipGrid ( );
+        this.isFillingByPlayer = false;
         console.log ( "Player initiated!" );
         GameUI.textDrawer ( "Player, place your ships!" ); 
         GameUI.placeShipInit ( );
-        this.fillGridByPlayer( );
+        //this.fillGridByPlayer( );
     };
 
     attack_cell ( cell_position )
@@ -206,5 +198,3 @@ class Player
 
     
 };
-
-//Pomenyat onClick dlya dwoih sostoyaniy
