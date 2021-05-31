@@ -42,7 +42,7 @@ class Cell
   constructor ( x, y, player )
   {
     this.position = new Vector2 ( player * playerMargin + x * dxy + deltaVector.x, y * dxy + deltaVector.y );
-    this.localPosition = new Vector2 ( x, y );
+    this.local_position = new Vector2 ( x, y );
     this.cell_type = CellType.Empty;
   };
   
@@ -134,7 +134,7 @@ class GameEnviroment
 
   static add_ship_cell ( cell, player, last_cell_position )
   {
-    const x = cell.localPosition.x, y = cell.localPosition.y;
+    const x = cell.local_position.x, y = cell.local_position.y;
     this.Cells [ player ][ x ][ y ].cell_type = CellType.Occupied;
     if ( !last_cell_position ) 
     {

@@ -2,11 +2,18 @@
 
 const PlayerType = 
 {
-    Player1: 0,
-    Player2: 1
+    Player2: 0,
+    Player1: 1
 };
 
-const shipAliveColor = "blue";
+const GameState = 
+{
+    FillingGrid: 0,
+    Fighting: 1
+};
+
+const ship_alive_color = "blue";
+const max_ship_decks = 4;
 
 const GridSettings = 
 {
@@ -64,7 +71,7 @@ const fill_by_player = ( cell ) =>
         {
             player1.currentShip.add_cell ( cell );
             GameEnviroment.add_ship_cell ( cell, player1.player_type, last_cell_position );
-            GameEnviroment.drawRectangleWithPosition ( cell.localPosition, player1.player_type, shipAliveColor );
+            GameEnviroment.drawRectangleWithPosition ( cell.local_position, player1.player_type, ship_alive_color );
         };
 
         if( !player1.currentShip )
@@ -72,7 +79,7 @@ const fill_by_player = ( cell ) =>
             if( cell.cell_type == CellType.Empty )
             {
                 player1.currentShip = new Ship ( currShipType.shipSize );
-                add_cell_to_enviroment(null);
+                add_cell_to_enviroment ( null );
             }
             else return;
         };
@@ -80,7 +87,7 @@ const fill_by_player = ( cell ) =>
         if ( cell.cell_type == CellType.Potential )
         {
             const cels_in_ship = player_ship.cells.length;
-            add_cell_to_enviroment(player_ship.cells [cels_in_ship - 1].localPosition);
+            add_cell_to_enviroment(player_ship.cells [cels_in_ship - 1].local_position);
         };
         
         if ( player1.currentShip.cells.length == currShipType.shipSize )
@@ -93,17 +100,28 @@ const fill_by_player = ( cell ) =>
         
         if ( player1.currentShipNumber == currShipType.numberOfShips )
         {
+            if ( player1.currentShipIndex == max_ship_decks - 1 )
+            {
+                player1.finish_filling_grid ( );
+                return;
+            }
             player1.currentShipIndex++;
             player1.currentShipNumber = 0;
             GameUI.placeShipChange (  player1.currentShipIndex );
         };
     };
+};
+
+const fill_random = ( ) =>
+{
+    //fill random
+    finish_filling_grid( );
 }
 
-const onPlayerClick = ( e ) =>
+const onPlayerClick = ( mouse_pos ) =>
 {
-        const cell = GameEnviroment.findClickedCell ( e.pageX, e.pageY, player1.player_type );
-        
+        let cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player1 );
+
         if ( !cell ) return;
         if ( player1.isFillingByPlayer )
         {
@@ -112,9 +130,29 @@ const onPlayerClick = ( e ) =>
         else
         {
             //here is some kind of attack we don't have
+        switch (game_state)
+        {
+            case GameState.FillingGrid:
+                if ( !cell ) return;
+                if( player1.isFillingByPlayer )
+                {
+                    fill_by_player( cell );
+                }
+                else 
+                {
+                    fill_random ( );
+                }
+                break;
+            case GameState.Fighting:
+                cell = GameEnviroment.findClickedCell ( mouse_pos.pageX, mouse_pos.pageY, PlayerType.Player2 );
+                if ( !cell ) return;
+                player1.attack_cell ( cell.local_position );
+                break;
+
         }
-        //this.grid.add_ship ( new Ship ( cell.localPosition, ) );
-        //GameEnviroment.drawPoint ( cell.localPosition.x, cell.localPosition.y, PlayerType.Player2, 'black' );
+        
+        //this.grid.add_ship ( new Ship ( cell.local_position, ) );
+        //GameEnviroment.drawPoint ( cell.local_position.x, cell.local_position.y, PlayerType.Player2, 'black' );
 };
 
 class Player
@@ -140,7 +178,12 @@ class Player
         this.fillGridByPlayer( );
     };
 
-    fillGridByPlayer( )
+    attack_cell ( cell_position )
+    {
+        this.emiter.emit ( "PlayerAttacked", cell_position );
+    }
+
+    fillGridByPlayer ( )
     {
         this.isFillingByPlayer = true;
     };
@@ -150,6 +193,7 @@ class Player
         console.log ( "Filling is finished, starting the game..." );
         GameUI.textDrawer ( "Starting the game..." );
         GameUI.placeShipHide ( );
+        game_state = GameState.Fighting;
         this.isFillingByPlayer = false;
     };
 

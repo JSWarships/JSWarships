@@ -14,16 +14,16 @@ class Ship
 		this.is_alive = true;
 	};
 
-	add_cell ( cell_coord )
+	add_cell ( cell )
 	{
-		this.cells.push ( cell_coord );
+		this.cells.push ( cell );
 	};
 
 	get_cell ( cell_position )
 	{
 		for( let ship_cell in cells )
 		{
-			if( ship_cell.localPosition.x == cell_position.x && ship_cell.localPosition.y == cell_position.y )
+			if( ship_cell.local_position.x == cell_position.x && ship_cell.local_position.y == cell_position.y )
 			{
 				return ship_cell;
 			}

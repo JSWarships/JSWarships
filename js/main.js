@@ -1,9 +1,10 @@
 'use strict';
 
 const emit = new EventEmitter ( );
-const player1 = new Player ( emit, PlayerType.Player2 );
+const player1 = new Player ( emit, PlayerType.Player1 );
 const bot = new Bot ( emit );
 const grid_size = 10;
+let game_state = GameState.FillingGrid;
 
 document.addEventListener ( 'DOMContentLoaded', ( ) => {
     GameUI.startButtons ( );
