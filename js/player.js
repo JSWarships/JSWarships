@@ -131,6 +131,7 @@ class Player
         this.grid = new ShipGrid( );
         console.log ( "Player initiated!" );
         GameUI.textDrawer ( "Player, place your ships!" ); 
+        GameUI.placeShipInit ( );
         this.fillGridByPlayer( );
     };
 
@@ -143,6 +144,7 @@ class Player
     {
         console.log ( "Filling is finished, starting the game..." );
         GameUI.textDrawer ( "Starting the game..." );
+        GameUI.placeShipHide ( );
         this.isFillingByPlayer = false;
     };
 
