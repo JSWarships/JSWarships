@@ -97,6 +97,8 @@ class GameEnviroment
 
   static add_ship ( player, ship ) 
   {
+    
+    if(!this.Ships[player]) this.Ships[player] = [];
     this.Ships[player].push ( ship );
   }
 
@@ -246,7 +248,7 @@ class GameEnviroment
     ctx.clearRect ( 0, 0, 700, 300 );
   };
 
-  static drawShips = player => 
+  /*static drawShips = player => 
   {
     for ( let i = 0; i < 10; i++ ) 
     {
@@ -264,6 +266,22 @@ class GameEnviroment
       Ships [ 1 ][ i ].drawKilled( );
     };
   };
+*/
+  
+  static shot ( x, y, player )
+  {
+    const cell = this.Cells[ player ][ x ][ y ];
+    switch ( cell.cell_type )
+    {
+      case 0: 
+      case 2: 
+      case 3: cell.cell_type = CellType.Missed; break;
+      case 1: cell.cell_type = CellType.Damaged; break;
+      case 4:
+      case 5: return 0;
+    }
+    return cell.cell_type();
+  }
 
 };
 
