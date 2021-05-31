@@ -262,7 +262,7 @@ class GameEnviroment
       let shipCells = ship.cells;
       for ( let j = 0; j < shipCells.length; j++ )
       {
-        let cellOfShip = shipCells[i];
+        let cellOfShip = shipCells[ j ];
         if ( cellOfShip.local_position.x === x && cellOfShip.local_position.y === y )
           return ship;
       };
@@ -272,12 +272,14 @@ class GameEnviroment
   static miss ( cell, player )
   {
     cell.cell_type = CellType.Missed;
-    result = "Missed";
+    let result = "Missed";
     // рисуем крестик
+    return result;
   };
   
   static hit ( cell, player )
   {
+    let result = "Damaged";
     cell.cell_type = CellType.Damaged;
     result = "Damaged";
     this.drawRectangleWithPosition( cell.local_position.x, cell.local_position.y, player, 'red' );
@@ -288,23 +290,24 @@ class GameEnviroment
           this.refresh_sea( player );
           result = "Aimed";
         }
+    return result;
   };
   
   static shot ( x, y, player )
   {
-    const result; 
+    let result; 
     const cell = this.Cells[ player ][ x ][ y ];
     switch ( cell.cell_type )
     {
       case 1:
-        hit ( cell, player );
+        result = this.hit ( cell, player );
         break;
       case 4:
       case 5:
         result = "Error";
         break;
       default:
-        miss ( cell, player );
+        result = this.miss ( cell, player );
         break;
     }
     return result;
