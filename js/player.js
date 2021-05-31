@@ -52,7 +52,6 @@ const onPlayerClick = ( e ) =>
             
             if( !currShipType.shipSize )
             {
-                player1.isFillingByPlayer = false;
                 player1.finish_filling_grid( );
                 return;
             };
@@ -130,7 +129,9 @@ class Player
 
     finish_filling_grid( )
     {
-
+        console.log ( "Filling is finished, starting the game..." );
+        GameUI.textDrawer ( "Starting the game..." );
+        this.isFillingByPlayer = false;
     };
 
     onBotAttacked( ) 
