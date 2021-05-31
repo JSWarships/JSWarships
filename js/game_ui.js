@@ -5,6 +5,8 @@ class GameUI
     static themeswitch ( )
     {
         document.body.classList.toggle ( 'dark-theme' );
+        if ( document.body.classList.contains ( 'dark-theme' ) ) localStorage.setItem ( 'theme', 'dark' );
+        else localStorage.setItem ( 'theme', 'none' );
     }
     static textInit ( )
     {
@@ -32,6 +34,8 @@ class GameUI
     }
     static startButtons ( )
     {
+        this.theme = localStorage.getItem ( 'theme' );
+            if ( this.theme == 'dark' ) this.themeswitch ( );
         this.textInit ( );
         this.textDrawer ( 'Select player to play with' );
         this.container = document.createElement ( 'div' );

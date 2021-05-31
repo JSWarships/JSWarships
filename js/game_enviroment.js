@@ -63,7 +63,7 @@ class GameEnviroment
         this.Cells [ player ][ i ] = [ ];
         for ( let j = 0; j < size; j++ )
         {
-          this.drawRectangle ( i, j, player, 'white' );
+          this.drawRectangle ( i, j, player, 'LightCyan' );
           this.Cells [ player ][ i ].push ( new Cell ( i, j, player ) );
         };
       };
@@ -127,7 +127,7 @@ class GameEnviroment
     {
       for ( let j = 0; j < 10; j++ ) 
       {
-        drawRectangle( i, j, player, 'white' );
+        drawRectangle( i, j, player, 'LightCyan' );
       };
     };
   };
