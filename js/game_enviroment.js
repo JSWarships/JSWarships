@@ -91,6 +91,8 @@ class GameEnviroment
 
   static add_ship ( player, ship ) 
   {
+    
+    if(!this.Ships[player]) this.Ships[player] = [];
     this.Ships[player].push ( ship );
   }
 
@@ -240,7 +242,7 @@ class GameEnviroment
     ctx.clearRect ( 0, 0, 700, 300 );
   };
 
-  static drawShips = player => 
+  /*static drawShips = player => 
   {
     for ( let i = 0; i < 10; i++ ) 
     {
@@ -258,7 +260,7 @@ class GameEnviroment
       Ships [ 1 ][ i ].drawKilled( );
     };
   };
-
+*/
 };
 
 const is_in_bounds = ( x, y ) => x > -1 && y > -1 && x < grid_size && y < grid_size;
