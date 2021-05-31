@@ -64,7 +64,7 @@ class GameEnviroment
         this.Cells [ player ][ i ] = [ ];
         for ( let j = 0; j < size; j++ )
         {
-          this.drawRectangle ( i, j, player, 'white' );
+          this.drawRectangle ( i, j, player, 'LightCyan' );
           this.Cells [ player ][ i ].push ( new Cell ( i, j, player ) );
         };
       };
@@ -135,7 +135,7 @@ class GameEnviroment
     {
       for ( let j = 0; j < 10; j++ ) 
       {
-        drawRectangle( i, j, player, 'white' );
+        drawRectangle( i, j, player, 'LightCyan' );
       };
     };
   };
@@ -261,6 +261,22 @@ class GameEnviroment
     };
   };
 */
+  
+  static shot ( x, y, player )
+  {
+    const cell = this.Cells[ player ][ x ][ y ];
+    switch ( cell.cell_type )
+    {
+      case 0: 
+      case 2: 
+      case 3: cell.cell_type = CellType.Missed; break;
+      case 1: cell.cell_type = CellType.Damaged; break;
+      case 4:
+      case 5: return 0;
+    }
+    return cell.cell_type();
+  }
+
 };
 
 const is_in_bounds = ( x, y ) => x > -1 && y > -1 && x < grid_size && y < grid_size;

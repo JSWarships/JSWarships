@@ -12,7 +12,7 @@ const GameState =
     Fighting: 1
 };
 
-const ship_alive_color = "blue";
+const ship_alive_color = "DeepSkyBlue";
 const max_ship_decks = 4;
 
 const GridSettings = 
@@ -87,7 +87,7 @@ const fill_by_player = ( cell ) =>
         if ( cell.cell_type == CellType.Potential )
         {
             const cels_in_ship = player_ship.cells.length;
-            add_cell_to_enviroment(player_ship.cells [cels_in_ship - 1].local_position);
+            add_cell_to_enviroment ( player_ship.cells [cels_in_ship - 1].local_position );
         };
         
         if ( player1.currentShip.cells.length == currShipType.shipSize )
@@ -137,7 +137,7 @@ const onPlayerClick = ( mouse_pos ) =>
                 if ( !cell ) return;
                 if( player1.isFillingByPlayer )
                 {
-                    fill_by_player( cell );
+                    fill_by_player ( cell );
                 }
                 else 
                 {
@@ -172,7 +172,7 @@ class Player
     {
         this.emiter.on ( "BotAttacked", this.onBotAttacked );
         window.addEventListener ( 'click', onPlayerClick, false );
-        this.grid = new ShipGrid( );
+        this.grid = new ShipGrid ( );
         console.log ( "Player initiated!" );
         GameUI.textDrawer ( "Player, place your ships!" ); 
         GameUI.placeShipInit ( );
@@ -202,6 +202,8 @@ class Player
     {
         console.log ( "Bot attacked!" );
     };
+
+    
 };
 
 //Pomenyat onClick dlya dwoih sostoyaniy

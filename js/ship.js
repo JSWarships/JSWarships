@@ -34,7 +34,7 @@ class Ship
 	{
 		const cell = this.get_cell( cell_position );
 		cell.cell_type = CellType.Damaged;
-		this.is_alive - this.check_alive ( );
+		this.is_alive = this.check_alive ( );
 	};
 
 	check_alive ( )
