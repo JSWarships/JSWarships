@@ -268,20 +268,62 @@ class GameEnviroment
   };
 */
   
+  static getShip ( x, y, player )
+  {
+    const ships = this.Ships[ player ];
+    for ( let i = 0; i < ships.length; i++ )
+    {
+      let ship = ships[ i ];
+      let shipCells = ship.cells;
+      for ( let j = 0; j < shipCells.length; j++ )
+      {
+        let cellOfShip = shipCells[i];
+        if ( cellOfShip.local_position.x === x && cellOfShip.local_position.y === y )
+          return ship;
+      };
+    };
+  };
+  
+  static miss ( cell, player )
+  {
+    cell.cell_type = CellType.Missed;
+    result = "Missed";
+    // рисуем крестик
+  };
+  
+  static hit ( cell, player )
+  {
+    cell.cell_type = CellType.Damaged;
+    result = "Damaged";
+    this.drawRectangleWithPosition( cell.local_position.x, cell.local_position.y, player, 'red' );
+    const ship = this.getShip( cell.local_position.x, cell.local_position.y, player );
+        ship.kill_cell( cell.position );
+        if ( !ship.check_alive() )
+        {
+          this.refresh_sea( player );
+          result = "Aimed";
+        }
+  };
+  
   static shot ( x, y, player )
   {
+    const result; 
     const cell = this.Cells[ player ][ x ][ y ];
     switch ( cell.cell_type )
     {
-      case 0: 
-      case 2: 
-      case 3: cell.cell_type = CellType.Missed; break;
-      case 1: cell.cell_type = CellType.Damaged; break;
+      case 1:
+        hit ( cell, player );
+        break;
       case 4:
-      case 5: return 0;
+      case 5:
+        result = "Error";
+        break;
+      default:
+        miss ( cell, player );
+        break;
     }
-    return cell.cell_type();
-  }
+    return result;
+  };
 
 };
 
