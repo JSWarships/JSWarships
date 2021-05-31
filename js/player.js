@@ -33,27 +33,25 @@ const GridSettings =
     getShip: ( index ) =>
     {
         let i = 0;
-        for( let shipSettings in GridSettings )
+        for ( let shipSettings in GridSettings )
         {
-            if( index == i ) return GridSettings [ shipSettings ];
+            if ( index == i ) return GridSettings [ shipSettings ];
             i++;
         };
-    };
+    }
 };
 
 const onPlayerClick = ( e ) =>
 {
         const cell = GameEnviroment.findClickedCell ( e.pageX, e.pageY, player1.player_type );
         const player_ship = player1.currentShip;
-        if ( cell == null ) return;
-
+        if ( !cell ) return;
         if( player1.isFillingByPlayer )
         {
             const currShipType = GridSettings.getShip ( player1.currentShipIndex );
             
             if( !currShipType.shipSize )
             {
-                player1.isFillingByPlayer = false;
                 player1.finish_filling_grid( );
                 return;
             };
@@ -120,7 +118,7 @@ class Player
         window.addEventListener ( 'click', onPlayerClick, false );
         this.grid = new ShipGrid( );
         console.log ( "Player initiated!" );
-
+        GameUI.textDrawer ( "Player, place your ships!" ); 
         this.fillGridByPlayer( );
     };
 
@@ -131,7 +129,9 @@ class Player
 
     finish_filling_grid( )
     {
-
+        console.log ( "Filling is finished, starting the game..." );
+        GameUI.textDrawer ( "Starting the game..." );
+        this.isFillingByPlayer = false;
     };
 
     onBotAttacked( ) 
