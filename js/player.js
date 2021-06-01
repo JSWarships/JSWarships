@@ -10,10 +10,10 @@ const GameState = {
   Fighting: 1
 };
 
-const config = ConfigManager.getConfig();
-const SHIP_ALIVE_COLOR = config.ShipAliveColor;
-const MAX_SHIP_DECKS = config.MaxShipDecks;
-const PLAYER = GameEnviroment.Player;
+//const config = ConfigManager.getConfig();
+const SHIP_ALIVE_COLOR = "DeepSkyBlue";//config.ShipAliveColor;
+const MAX_SHIP_DECKS = 4;//config.MaxShipDecks;
+//const PLAYER = GameEnviroment.Player;
 
 const GridSettings = {
   OneDeck: {
@@ -46,12 +46,12 @@ const GridSettings = {
 };
 
 const fillByPlayer = cell => {
-  const playerShip = PLAYER.currentShip;
-  if (PLAYER.isFillingByPlayer) {
-    const currShipType = GridSettings.getShip(PLAYER.currentShipIndex);
+  const playerShip = player.currentShip;
+  if (player.isFillingByPlayer) {
+    const currShipType = GridSettings.getShip(player.currentShipIndex);
 
     if (!currShipType.shipSize) {
-      PLAYER.finishFillingGrid();
+      player.finishFillingGrid();
       return;
     }
 
@@ -61,22 +61,22 @@ const fillByPlayer = cell => {
     }
 
     const addCellToEnviroment = lastCellPosition => {
-      PLAYER.currentShip.add_cell(cell);
-      GameEnviroment.add_ship_cell(
+      player.currentShip.addCell(cell);
+      GameEnviroment.addShipCell(
         cell,
-        PLAYER.playerType,
+        player.playerType,
         lastCellPosition
       );
       GameEnviroment.drawRectangleWithPosition(
         cell.localPosition,
-        PLAYER.playerType,
+        player.playerType,
         SHIP_ALIVE_COLOR
       );
     };
 
-    if (!PLAYER.currentShip) {
+    if (!player.currentShip) {
       if (cell.cellType === CellType.Empty) {
-        PLAYER.currentShip = new Ship(currShipType.shipSize);
+        player.currentShip = new Ship(currShipType.shipSize);
         addCellToEnviroment(null);
       } else return;
     }
@@ -86,29 +86,29 @@ const fillByPlayer = cell => {
       addCellToEnviroment(playerShip.cells[celsInShip - 1].localPosition);
     }
 
-    if (PLAYER.currentShip.cells.length === currShipType.shipSize) {
-      PLAYER.currentShipNumber++;
-      GameEnviroment.addShip(PlayerType.Player1, PLAYER.currentShip);
-      GameEnviroment.refreshSea(PLAYER.playerType);
+    if (player.currentShip.cells.length === currShipType.shipSize) {
+      player.currentShipNumber++;
+      GameEnviroment.addShip(PlayerType.Player1, player.currentShip);
+      GameEnviroment.refreshSea(player.playerType);
       console.log('refreshed');
-      PLAYER.currentShip = null;
+      player.currentShip = null;
     }
 
-    if (PLAYER.currentShipNumber === currShipType.numberOfShips) {
-      if (PLAYER.currentShipIndex === MAX_SHIP_DECKS - 1) {
-        PLAYER.finishFillingGrid();
+    if (player.currentShipNumber === currShipType.numberOfShips) {
+      if (player.currentShipIndex === MAX_SHIP_DECKS - 1) {
+        player.finishFillingGrid();
         return;
       }
-      PLAYER.currentShipIndex++;
-      PLAYER.currentShipNumber = 0;
-      GameUI.placeShipChange(PLAYER.currentShipIndex);
+      player.currentShipIndex++;
+      player.currentShipNumber = 0;
+      GameUI.placeShipChange(player.currentShipIndex);
     }
   }
 };
 
 const fillRandom = () => {
   RandomPlacer.fillGridRandom(PlayerType.Player1);
-  PLAYER.finishFillingGrid();
+  player.finishFillingGrid();
 };
 
 const onPlayerClick = mousePos => {
@@ -121,7 +121,7 @@ const onPlayerClick = mousePos => {
   //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
   case GameState.FillingGrid:
-    if (PLAYER.isFillingByPlayer) {
+    if (player.isFillingByPlayer) {
       if (!cell) return;
       fillByPlayer(cell);
     } else {
@@ -135,7 +135,7 @@ const onPlayerClick = mousePos => {
       PlayerType.Player2
     );
     if (!cell) return;
-    PLAYER.attackCell(cell.localPosition);
+    player.attackCell(cell.localPosition);
     break;
   }
 };
@@ -183,4 +183,4 @@ class Player {
 }
 
 
-module.exports = Player;
+//module.exports = Player;

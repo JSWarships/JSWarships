@@ -1,8 +1,8 @@
 
 
-const config = ConfigManager.getConfig();
-const SHIP_ALIVE_COLOR = config.ShipAliveColor;
-const GRID_SIZE = config.GridSize;
+//const config = ConfigManager.getConfig();
+//const SHIP_ALIVE_COLOR = config.ShipAliveColor;
+//const GRID_SIZE = config.GridSize;
 
 class RandomPlacer {
   static getAllPotential(player) {
@@ -65,7 +65,7 @@ class RandomPlacer {
         GameEnviroment.addShipCell(cell, player, null);
         ship.addCell(cell);
         GameEnviroment.drawRectangleWithPosition(
-          cell.local_position,
+          cell.localPosition,
           player,
           SHIP_ALIVE_COLOR
         );
@@ -82,7 +82,7 @@ class RandomPlacer {
             ];
           console.log(cell);
           GameEnviroment.addShipCell(cell, player, lastCellPos);
-          ship.add_cell(cell);
+          ship.addCell(cell);
           GameEnviroment.drawRectangleWithPosition(
             cell.localPosition,
             player,
@@ -98,4 +98,4 @@ class RandomPlacer {
 }
 
 
-module.exports = RandomPlacer;
+//module.exports = RandomPlacer;

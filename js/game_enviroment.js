@@ -6,7 +6,7 @@ const squareSize = 30;
 const playerMargin = squareSize * 12;
 const dxy = squareSize;
 const minDistanceToCell = squareSize * Math.sqrt(2) - 5;
-const GRID_SIZE = ConfigManager.getConfig().GridSize;
+const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
 
 class Vector2 {
   constructor(x, y) {

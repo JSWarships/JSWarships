@@ -1,6 +1,6 @@
 'use strict';
 
-const fs = require('fs');
+/*const fs = require('fs');
 
 class ConfigManager {
   static getConfig() {
@@ -11,4 +11,4 @@ class ConfigManager {
   }
 }
 
-module.exports = ConfigManager;
+module.exports = ConfigManager;*/

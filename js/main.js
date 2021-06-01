@@ -1,9 +1,9 @@
 
 
 const emit = new EventEmitter();
-const PLAYER = new Player(emit, PlayerType.Player1);
+const player = new Player(emit, PlayerType.Player1);
 const bot = new Bot(emit);
-const GRID_SIZE = ConfigManager.getConfig().GridSize;
+//const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -11,23 +11,23 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initializePlayers() {
-  GameEnviroment.Player = PLAYER;
+  GameEnviroment.Player = player;
   GameEnviroment.Bot = bot;
 }
 
 function PlayWithBot() {
   GameUI.startButtonsHide();
-  GameEnviroment.draw_grid(GRID_SIZE);
+  GameEnviroment.drawGrid(GRID_SIZE);
   initializePlayers();
   GameEnviroment.GameState = GameState.FillingGrid;
   setTimeout(() => {
-    PLAYER.start();
+    player.start();
     bot.start();
   }, 100);
 }
 
 function GenerateRandomShips() {
-  PLAYER.isFillingByPlayer = false;
+  player.isFillingByPlayer = false;
   onPlayerClick(null);
 }
 

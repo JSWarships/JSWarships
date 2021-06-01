@@ -1,8 +1,8 @@
 
 
-const config = ConfigManager.getConfig();
-const GRID_SIZE = config.getConfig().GridSize;
-const PLAYER = GameEnviroment.Player;
+//const config = ConfigManager.getConfig();
+//const GRID_SIZE = config.getConfig().GridSize;
+//const PLAYER = GameEnviroment.Player;
 
 class Bot {
   constructor(emiter) {
@@ -22,10 +22,10 @@ class Bot {
       while (true) {
         x = Math.floor(Math.random() * GRID_SIZE);
         y = Math.floor(Math.random() * GRID_SIZE);
-        if (GameEnviroment.Cells[PLAYER.playerType][x][y].cellType < 4)
+        if (GameEnviroment.Cells[player.playerType][x][y].cellType < 4)
           break; //checking if we hadn't already shotted
       }
-      const hit = GameEnviroment.shot(x, y, PLAYER.playerType);
+      const hit = GameEnviroment.shot(x, y, player.playerType);
       if (hit == 'Damaged')
         this.lastAttacked = {
           coords: [ [ x, y ] ],
@@ -52,7 +52,7 @@ class Bot {
           break;
         }
         }
-        const hit = GameEnviroment.shot(x, y, PLAYER.playerType);
+        const hit = GameEnviroment.shot(x, y, player.playerType);
         switch (hit) {
         case 'Damaged':
           this.lastAttacked.coords.push([ x, y ]);
@@ -80,7 +80,7 @@ class Bot {
           else x = PrevCoords[0][0]--;
           y = PrevCoords[0][1];
         }
-        const hit = GameEnviroment.shot(x, y, PLAYER.playerType);
+        const hit = GameEnviroment.shot(x, y, player.playerType);
         switch (hit) {
         case 'Damaged':
           this.lastAttacked.coords.push([ x, y ]);
@@ -99,4 +99,4 @@ class Bot {
   }
 }
 
-module.exports = Bot;
+//module.exports = Bot;
