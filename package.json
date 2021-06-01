@@ -3,10 +3,8 @@
   "version": "1.0.0",
   "description": "Гра морський бій у варіаціях: для одного гравця, для двох гравців",
   "main": "index.html",
-  "type": "module",
   "scripts": {
-    "start": "node main.js",
-    "type": "module"
+    "start": "node main.js"
   },
   "repository": {
     "type": "git",
