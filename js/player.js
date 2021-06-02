@@ -107,6 +107,9 @@ const shipsReset = () => {
   GameEnviroment.Ships[PlayerType.Player1] = [];
   GameEnviroment.drawGrid(GRID_SIZE);
   GameUI.placeShipChange(0);
+  player.currentShipIndex = 0;
+  player.currentShipIndex = 0;
+  player.currentShip = null;
   bot.placer();
 };
 
