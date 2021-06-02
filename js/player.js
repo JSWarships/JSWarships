@@ -43,15 +43,13 @@ const GridSettings = {
   },
 };
 
+const areAllShips = () => GameEnviroment.Ships[PlayerType.Player1].length > 8;
+
 const fillByPlayer = (cell) => {
   const playerShip = player.currentShip;
   if (player.isFillingByPlayer) {
     const currShipType = GridSettings.getShip(player.currentShipIndex);
-
-    if (!currShipType.shipSize) {
-      player.finishFillingGrid();
-      return;
-    }
+    if (areAllShips()) return;
 
     if (cell.cellType === CellType.Occupied) {
       console.warn('Occupied');
@@ -102,8 +100,20 @@ const fillByPlayer = (cell) => {
 
 const fillRandom = () => {
   RandomPlacer.fillGridRandom(PlayerType.Player1);
-  player.finishFillingGrid();
 };
+
+const shipsReset = () => {
+  GameEnviroment.Ships[PlayerType.Player1] = [];
+  GameEnviroment.drawGrid(GRID_SIZE);
+  bot.placer();
+};
+
+const startGame = () => {
+  if (!areAllShips()) GameUI.textDrawer('Not all the ships placed!');
+  else player.finishFillingGrid();
+};
+
+
 
 const onPlayerClick = (mousePos) => {
   let cell = GameEnviroment.findClickedCell(
@@ -118,9 +128,7 @@ const onPlayerClick = (mousePos) => {
       if (player.isFillingByPlayer) {
         if (!cell) return;
         fillByPlayer(cell);
-      } else {
-        fillRandom();
-      }
+      };
       break;
     case GameState.Fighting:
       cell = GameEnviroment.findClickedCell(
@@ -145,9 +153,9 @@ class Player {
   }
 
   start() {
+    shipsReset();
     this.emiter.on('BotAttacked', this.onBotAttacked);
     window.addEventListener('click', onPlayerClick, false);
-    this.isFillingByPlayer = false;
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
     GameUI.placeShipInit();
