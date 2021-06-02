@@ -1,5 +1,3 @@
-
-
 //const config = ConfigManager.getConfig();
 //const SHIP_ALIVE_COLOR = config.ShipAliveColor;
 //const GRID_SIZE = config.GridSize;
@@ -17,48 +15,53 @@ class RandomPlacer {
     }
     return potential;
   }
+  static Directions = [Vector2.Up, Vector2.Left, Vector2.Right, Vector2.Down];
 
-  static isAvailable(cellPosition, shipSize, player) {
-    const Cells = GameEnviroment.Cells;
-    const x = cellPosition.x,
-      y = cellPosition.y;
-    const cellsNumber = [ 0, 0, 0, 0 ];
-    for (let i = 1; i < shipSize; i++) {
-      if (checkBounds(x + i, y))
-        if (Cells[player][x + i][y].cellType === CellType.Empty)
-          cellsNumber[0]++;
-      if (checkBounds(x - i, y))
-        if (Cells[player][x - i][y].cellType === CellType.Empty)
-          cellsNumber[1]++;
-      if (checkBounds(x, y + i))
-        if (Cells[player][x][y + i].cellType === CellType.Empty)
-          cellsNumber[2]++;
-      if (checkBounds(x, y - i))
-        if (Cells[player][x][y - i].cellType === CellType.Empty)
-          cellsNumber[3]++;
+  static getPossibleDirections(cellPosition, shipSize, player) {
+    const possibleCellsNumber = [0, 0, 0, 0];
+    const possibleDirections = [];
+    for (let i = 0; i < shipSize; i++) {
+      for (let j = 0; j < this.Directions.length; j++) {
+        const direction = this.Directions[j];
+        const positionToCheck = cellPosition.add(direction.multiply(i));
+        console.log(positionToCheck);
+        if (checkBounds(positionToCheck.x, positionToCheck.y))
+          if (
+            GameEnviroment.getCell(player, positionToCheck).cellType ===
+            CellType.Empty
+          )
+            possibleCellsNumber[j]++;
+      }
     }
-    for (let i = 0; i < 4; i++) {
-      if (cellsNumber[i] === shipSize - 1) return true;
+    for (let i = 0; i < possibleCellsNumber.length; i++) {
+      if (possibleCellsNumber[i] === shipSize)
+        possibleDirections.push(this.Directions[i]);
     }
-    return false;
+    return possibleDirections;
   }
 
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
     let cell = GameEnviroment.Cells[player][coords.x][coords.y];
 
-
     for (const shipSettingKey in GridSettings) {
       const shipSetting = GridSettings[shipSettingKey];
       if (shipSetting === GridSettings.getShip()) return;
       for (let i = 0; i < shipSetting.numberOfShips; i++) {
         const ship = new Ship(shipSetting.shipSize);
+        let possibleDirections;
         while (true) {
           coords = new Vector2(
             Math.floor(Math.random() * GRID_SIZE),
             Math.floor(Math.random() * GRID_SIZE)
           );
-          if (this.isAvailable(coords, shipSetting.shipSize, player)) break;
+          console.log({ coords });
+          possibleDirections = this.getPossibleDirections(
+            coords,
+            shipSetting.shipSize,
+            player
+          );
+          if (possibleDirections.length > 0) break;
         }
 
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
@@ -69,20 +72,18 @@ class RandomPlacer {
           player,
           SHIP_ALIVE_COLOR
         );
-        console.log(cell);
-        let lastCellPos = cell.local_position;
 
+        let lastCellPos = cell.localPosition;
+        const direction =
+          possibleDirections[
+            Math.floor(Math.random() * possibleDirections.length)
+          ];
+        console.log(direction);
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
-          const coordsPotential = this.getAllPotential(player);
-          console.log(coordsPotential);
-          const randomNum = Math.floor(Math.random() * coordsPotential.length);
-          cell =
-            GameEnviroment.Cells[player][coordsPotential[randomNum].x][
-              coordsPotential[randomNum].y
-            ];
-          console.log(cell);
-          GameEnviroment.addShipCell(cell, player, lastCellPos);
+          cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
+
           ship.addCell(cell);
+          GameEnviroment.addShipCell(cell, player, lastCellPos);
           GameEnviroment.drawRectangleWithPosition(
             cell.localPosition,
             player,
@@ -96,6 +97,5 @@ class RandomPlacer {
     }
   }
 }
-
 
 //module.exports = RandomPlacer;

@@ -1,5 +1,3 @@
-
-
 class Ship {
   constructor(size) {
     this.cells = [];
@@ -24,7 +22,7 @@ class Ship {
 
   checkAlive() {
     const filtered = this.cells.filter(
-      shipCell => shipCell.cellType !== CellType.Damaged
+      (shipCell) => shipCell.cellType !== CellType.Damaged
     );
     return filtered.length > 0;
   }
@@ -34,7 +32,6 @@ class Ship {
     cell.cellType = CellType.Damaged;
     this.isAlive = this.checkAlive();
   }
-
 
   getCellType(cellPosition) {
     return this.getCell(cellPosition).cellType;
