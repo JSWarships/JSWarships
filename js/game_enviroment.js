@@ -1,12 +1,10 @@
-
-
 const canvas = document.getElementById('myCanvas');
 const ctx = canvas.getContext('2d');
 const squareSize = 30;
 const playerMargin = squareSize * 12;
 const dxy = squareSize;
 const minDistanceToCell = squareSize * Math.sqrt(2) - 5;
-const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
+const GRID_SIZE = 10; //ConfigManager.getConfig().GridSize;
 
 class Vector2 {
   constructor(x, y) {
@@ -14,11 +12,24 @@ class Vector2 {
     this.y = y;
   }
 
+  add(another) {
+    return new Vector2(this.x + another.x, this.y + another.y);
+  }
+
+  multiply(number) {
+    return new Vector2(this.x * number, this.y * number);
+  }
+
   static distance(vectorFrom, vectorTo) {
     return Math.sqrt(
       (vectorFrom.x - vectorTo.x) ** 2 + (vectorFrom.y - vectorTo.y) ** 2
     );
   }
+
+  static Up = new Vector2(0, 1);
+  static Right = new Vector2(1, 0);
+  static Left = new Vector2(-1, 0);
+  static Down = new Vector2(0, -1);
 }
 
 const deltaVector = new Vector2(
@@ -37,7 +48,7 @@ const CellType = {
   Blocked: 2,
   Potential: 3,
   Missed: 4,
-  Damaged: 5
+  Damaged: 5,
 };
 
 class Cell {
@@ -52,14 +63,14 @@ class Cell {
 }
 
 class GameEnviroment {
-  static Cells = [ [] ];
-  static Ships = [ [] ];
+  static Cells = [[]];
+  static Ships = [[]];
   static Player;
   static Bot;
   static GameState;
 
   static checkLose(player) {
-    const filtered = Ships[player].filter(ship => ship.isAlive);
+    const filtered = Ships[player].filter((ship) => ship.isAlive);
     return filtered == 0;
   }
 
@@ -75,6 +86,10 @@ class GameEnviroment {
         }
       }
     }
+  }
+
+  static getCell(player, position) {
+    return this.Cells[player][position.x][position.y];
   }
 
   static findClickedCell(x, y, player) {
@@ -148,7 +163,7 @@ class GameEnviroment {
     ctx.closePath();
   };
 
-  static drawSea = player => {
+  static drawSea = (player) => {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         this.drawRectangle(i, j, player, 'LightCyan');
@@ -171,8 +186,8 @@ class GameEnviroment {
       console.log(x + differenceVector.x);
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
         if (
-          this.Cells[player][x + differenceVector.x][y + differenceVector.y].
-            cellType === CellType.Empty
+          this.Cells[player][x + differenceVector.x][y + differenceVector.y]
+            .cellType === CellType.Empty
         ) {
           this.Cells[player][x + differenceVector.x][
             y + differenceVector.y
@@ -212,13 +227,11 @@ class GameEnviroment {
         this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
       }
     }
-
   }
 
   static refreshSea(player) {
     for (let i = 0; i < GRID_SIZE; i++) {
       for (let j = 0; j < GRID_SIZE; j++) {
-
         if (this.Cells[player][i][j].cellType === CellType.Occupied) {
           this.surroundCellBlockPotential(i, j, player);
         }
@@ -296,16 +309,16 @@ class GameEnviroment {
     let result;
     const cell = this.Cells[player][x][y];
     switch (cell.cellType) {
-    case 1:
-      result = this.hit(cell, player);
-      break;
-    case 4:
-    case 5:
-      result = 'Error';
-      break;
-    default:
-      result = this.miss(cell, player);
-      break;
+      case 1:
+        result = this.hit(cell, player);
+        break;
+      case 4:
+      case 5:
+        result = 'Error';
+        break;
+      default:
+        result = this.miss(cell, player);
+        break;
     }
     return result;
   }

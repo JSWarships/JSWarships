@@ -1,10 +1,7 @@
-
-
 const emit = new EventEmitter();
 const player = new Player(emit, PlayerType.Player1);
 const bot = new Bot(emit);
 //const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
-
 
 document.addEventListener('DOMContentLoaded', () => {
   GameUI.startButtons();
@@ -30,4 +27,3 @@ function GenerateRandomShips() {
   player.isFillingByPlayer = false;
   onPlayerClick(null);
 }
-

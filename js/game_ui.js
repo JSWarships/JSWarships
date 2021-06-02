@@ -1,5 +1,3 @@
-
-
 class GameUI {
   static themeSwitch() {
     document.body.classList.toggle('dark-theme');

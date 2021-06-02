@@ -1,51 +1,49 @@
-
-
 const PlayerType = {
   Player2: 0,
-  Player1: 1
+  Player1: 1,
 };
 
 const GameState = {
   FillingGrid: 0,
-  Fighting: 1
+  Fighting: 1,
 };
 
 //const config = ConfigManager.getConfig();
-const SHIP_ALIVE_COLOR = "DeepSkyBlue";//config.ShipAliveColor;
-const MAX_SHIP_DECKS = 4;//config.MaxShipDecks;
+const SHIP_ALIVE_COLOR = 'DeepSkyBlue'; //config.ShipAliveColor;
+const MAX_SHIP_DECKS = 4; //config.MaxShipDecks;
 //const PLAYER = GameEnviroment.Player;
 
 const GridSettings = {
   OneDeck: {
     numberOfShips: 4,
-    shipSize: 1
+    shipSize: 1,
   },
 
   TwoDeck: {
     numberOfShips: 2,
-    shipSize: 2
+    shipSize: 2,
   },
 
   ThreeDeck: {
     numberOfShips: 2,
-    shipSize: 3
+    shipSize: 3,
   },
 
   FourDeck: {
     numberOfShips: 1,
-    shipSize: 4
+    shipSize: 4,
   },
 
-  getShip: index => {
+  getShip: (index) => {
     let i = 0;
     for (const shipSettings in GridSettings) {
       if (index === i) return GridSettings[shipSettings];
       i++;
     }
-  }
+  },
 };
 
-const fillByPlayer = cell => {
+const fillByPlayer = (cell) => {
   const playerShip = player.currentShip;
   if (player.isFillingByPlayer) {
     const currShipType = GridSettings.getShip(player.currentShipIndex);
@@ -60,13 +58,9 @@ const fillByPlayer = cell => {
       return;
     }
 
-    const addCellToEnviroment = lastCellPosition => {
+    const addCellToEnviroment = (lastCellPosition) => {
       player.currentShip.addCell(cell);
-      GameEnviroment.addShipCell(
-        cell,
-        player.playerType,
-        lastCellPosition
-      );
+      GameEnviroment.addShipCell(cell, player.playerType, lastCellPosition);
       GameEnviroment.drawRectangleWithPosition(
         cell.localPosition,
         player.playerType,
@@ -111,7 +105,7 @@ const fillRandom = () => {
   player.finishFillingGrid();
 };
 
-const onPlayerClick = mousePos => {
+const onPlayerClick = (mousePos) => {
   let cell = GameEnviroment.findClickedCell(
     mousePos.pageX,
     mousePos.pageY,
@@ -120,23 +114,23 @@ const onPlayerClick = mousePos => {
 
   //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
-  case GameState.FillingGrid:
-    if (player.isFillingByPlayer) {
+    case GameState.FillingGrid:
+      if (player.isFillingByPlayer) {
+        if (!cell) return;
+        fillByPlayer(cell);
+      } else {
+        fillRandom();
+      }
+      break;
+    case GameState.Fighting:
+      cell = GameEnviroment.findClickedCell(
+        mousePos.pageX,
+        mousePos.pageY,
+        PlayerType.Player2
+      );
       if (!cell) return;
-      fillByPlayer(cell);
-    } else {
-      fillRandom();
-    }
-    break;
-  case GameState.Fighting:
-    cell = GameEnviroment.findClickedCell(
-      mousePos.pageX,
-      mousePos.pageY,
-      PlayerType.Player2
-    );
-    if (!cell) return;
-    player.attackCell(cell.localPosition);
-    break;
+      player.attackCell(cell.localPosition);
+      break;
   }
 };
 
@@ -153,7 +147,7 @@ class Player {
   start() {
     this.emiter.on('BotAttacked', this.onBotAttacked);
     window.addEventListener('click', onPlayerClick, false);
-    this.isFillingByPlayer = true;
+    this.isFillingByPlayer = false;
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
     GameUI.placeShipInit();
@@ -181,6 +175,5 @@ class Player {
     console.log('Bot attacked!');
   }
 }
-
 
 //module.exports = Player;
