@@ -42,8 +42,14 @@ class RandomPlacer {
 
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
+    const Cells = GameEnviroment.Cells;
     let cell = GameEnviroment.Cells[player][coords.x][coords.y];
-
+    for (let i=0; i<10; i++){
+      for (let j=0; j<10; j++){
+        Cells[player][i][j].cellType = CellType.Empty;
+        GameEnviroment.drawRectangle(i, j, player, 'LightCyan');
+      }
+    }
     for (const shipSettingKey in GridSettings) {
       const shipSetting = GridSettings[shipSettingKey];
       if (shipSetting === GridSettings.getShip()) return;
