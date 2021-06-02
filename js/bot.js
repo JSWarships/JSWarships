@@ -8,11 +8,15 @@ class Bot {
     this.lastAttacked = null;
   }
 
-  start() {
-    this.emiter.on('PlayerAttacked', this.onPlayerAttacked);
+  placer() {
     while (RandomPlacer.fillGridRandom(PlayerType.Player2) == 'Error') {
       GameEnviroment.clearSea();
     }
+  }
+
+  start() {
+    this.emiter.on('PlayerAttacked', this.onPlayerAttacked);
+    this.placer();
   }
 
   onPlayerAttacked() {

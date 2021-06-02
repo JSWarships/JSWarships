@@ -80,6 +80,10 @@ body.dark-theme h3 {
     top: 20%;
 }
 
+#game {
+    top: 70%;
+}
+
 .btn {
     margin: 10px;
     border: 1px solid blue;

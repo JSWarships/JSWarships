@@ -24,7 +24,7 @@ class RandomPlacer {
       for (let j = 0; j < this.Directions.length; j++) {
         const direction = this.Directions[j];
         const positionToCheck = cellPosition.add(direction.multiply(i));
-        console.log(positionToCheck);
+        //console.log(positionToCheck);
         if (checkBounds(positionToCheck.x, positionToCheck.y))
           if (
             GameEnviroment.getCell(player, positionToCheck).cellType ===
@@ -61,7 +61,7 @@ class RandomPlacer {
             Math.floor(Math.random() * GRID_SIZE),
             Math.floor(Math.random() * GRID_SIZE)
           );
-          console.log({ coords });
+          //console.log({ coords });
           possibleDirections = this.getPossibleDirections(
             coords,
             shipSetting.shipSize,
@@ -84,7 +84,7 @@ class RandomPlacer {
           possibleDirections[
             Math.floor(Math.random() * possibleDirections.length)
           ];
-        console.log(direction);
+        //console.log(direction);
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
           cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
 

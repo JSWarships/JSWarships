@@ -100,7 +100,7 @@ class GameEnviroment {
         if (
           Vector2.distance(cells[i][j].position, mousePos) <= minDistanceToCell
         ) {
-          console.log({ x: i, y: j });
+          //console.log({ x: i, y: j });
           return cells[i][j];
         }
       }
@@ -182,8 +182,8 @@ class GameEnviroment {
         x - lastCellPosition.x,
         y - lastCellPosition.y
       );
-      console.log(lastCellPosition);
-      console.log(x + differenceVector.x);
+      //console.log(lastCellPosition);
+      //console.log(x + differenceVector.x);
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
         if (
           this.Cells[player][x + differenceVector.x][y + differenceVector.y]
