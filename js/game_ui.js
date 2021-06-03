@@ -68,4 +68,28 @@ class GameUI {
     canvas.style.visibility = 'visible';
     canvas.style.opacity = '1';
   }
+  static showScore () {
+    GameUI.score = document.createElement('h2');
+    GameUI.container.appendChild(this.score);
+    GameUI.container.id = 'score';
+    GameUI.container.style.display = 'inline-flex';
+  }
+  static updateScore() {
+    const botScore = GameEnviroment.Bot.score;
+    const playerScore = GameEnviroment.Player.score;
+    if ( botScore < 9 && playerScore < 9 ) GameUI.score.innerText = `${botScore} - ${playerScore}`;
+    else {
+        GameUI.containerHide();
+        GameEnviroment.GameState = 2;
+        switch ( botScore ) {
+        case 9:
+          GameUI.textDrawer('Bot WON!');
+          break;
+        default:
+          GameUI.textDrawer('Player WON!');
+          break;
+        }
+        
+    }
+  }
 }
