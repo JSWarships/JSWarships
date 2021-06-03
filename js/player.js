@@ -43,15 +43,13 @@ const GridSettings = {
   },
 };
 
+const areAllShips = () => GameEnviroment.Ships[PlayerType.Player1].length > 8;
+
 const fillByPlayer = (cell) => {
   const playerShip = player.currentShip;
   if (player.isFillingByPlayer) {
     const currShipType = GridSettings.getShip(player.currentShipIndex);
-
-    if (!currShipType.shipSize) {
-      player.finishFillingGrid();
-      return;
-    }
+    if (areAllShips()) return;
 
     if (cell.cellType === CellType.Occupied) {
       console.warn('Occupied');
@@ -101,9 +99,26 @@ const fillByPlayer = (cell) => {
 };
 
 const fillRandom = () => {
+  GameUI.placeShipHide();
   RandomPlacer.fillGridRandom(PlayerType.Player1);
-  player.finishFillingGrid();
 };
+
+const shipsReset = () => {
+  GameEnviroment.Ships[PlayerType.Player1] = [];
+  GameEnviroment.drawGrid(GRID_SIZE);
+  GameUI.placeShipChange(0);
+  player.currentShipIndex = 0;
+  player.currentShipIndex = 0;
+  player.currentShip = null;
+  bot.placer();
+};
+
+const startGame = () => {
+  if (!areAllShips()) GameUI.textDrawer('Not all the ships placed!');
+  else player.finishFillingGrid();
+};
+
+
 
 const onPlayerClick = (mousePos) => {
   let cell = GameEnviroment.findClickedCell(
@@ -118,9 +133,7 @@ const onPlayerClick = (mousePos) => {
       if (player.isFillingByPlayer) {
         if (!cell) return;
         fillByPlayer(cell);
-      } else {
-        fillRandom();
-      }
+      };
       break;
     case GameState.Fighting:
       cell = GameEnviroment.findClickedCell(
@@ -145,17 +158,18 @@ class Player {
   }
 
   start() {
-    this.emiter.on('BotAttacked', this.onBotAttacked);
+    shipsReset();
     window.addEventListener('click', onPlayerClick, false);
-    this.isFillingByPlayer = false;
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
-    GameUI.placeShipInit();
     //this.fillGridByPlayer( );
   }
 
   attackCell(cellPosition) {
-    GameEnviroment.shot(cellPosition.x, cellPosition.y, PlayerType.Player2);
+    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, player.playerType);
+    GameUI.textDrawer('You ' + hit);
+    GameEnviroment.GameState = GameState.FillingGrid;
+    GameEnviroment.Bot.onPlayerAttacked();
   }
 
   fillGridByPlayer() {
@@ -166,6 +180,7 @@ class Player {
     console.log('Filling is finished, starting the game...');
     GameUI.textDrawer('Starting the game...');
     GameUI.placeShipHide();
+    GameUI.containerHide();
     GameEnviroment.GameState = GameState.Fighting;
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();
