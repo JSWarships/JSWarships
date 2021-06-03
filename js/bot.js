@@ -34,7 +34,6 @@ class Bot {
       let temporary = this.nextattack;
       this.nextattack = null;
       hit = GameEnviroment.shot(temporary[0], temporary[1], PlayerType.Player1);
-
     }
     else if (!this.lastAttacked) {
       let x, y;
@@ -59,15 +58,15 @@ class Bot {
         switch (this.lastAttacked.vector) {
           case 'Vertical': {
             anvector = 'Horizontal';
-            if ( (PrevCoords[len - 1][1] + 1) == PrevCoords[len - 2][1]) y = (PrevCoords[len - 1][1]--);
-            else y = (PrevCoords[len - 1][1]++);
+            if ( (PrevCoords[len - 1][1] + 1) == PrevCoords[len - 2][1]) y = (PrevCoords[len - 1][1] - 1);
+            else y = (PrevCoords[len - 1][1] + 1);
             x = PrevCoords[len - 1][0];
             break;
           }
           case 'Horizontal': {
             anvector = 'Vertical';
-            if ( (PrevCoords[len - 1][0] + 1) == PrevCoords[len - 2][0]) x = (PrevCoords[len - 1][0]--);
-            else x = (PrevCoords[len - 1][0]++);
+            if ( (PrevCoords[len - 1][0] + 1) == PrevCoords[len - 2][0]) x = (PrevCoords[len - 1][0] - 1);
+            else x = (PrevCoords[len - 1][0] + 1);
             y = PrevCoords[len - 1][1];
             break;
           }
@@ -103,13 +102,13 @@ class Bot {
         {
           if (Math.random(2) >= 0.5) {
             potentialVector = 'Vertical';
-            if (Math.random(2) >= 0.5) y = PrevCoords[0][1]++;
-            else y = PrevCoords[0][1]--;
+            if (Math.random(2) >= 0.5) y = PrevCoords[0][1] + 1;
+            else y = PrevCoords[0][1] - 1;
             x = PrevCoords[0][0];
           } else {
             potentialVector = 'Horizontal';
-            if (Math.random(2) >= 0.5) x = PrevCoords[0][0]++;
-            else x = PrevCoords[0][0]--;
+            if (Math.random(2) >= 0.5) x = PrevCoords[0][0] + 1;
+            else x = PrevCoords[0][0] - 1;
             y = PrevCoords[0][1];
           }
           if (GameEnviroment.Cells[PlayerType.Player1][x] && GameEnviroment.Cells[PlayerType.Player1][x][y] && GameEnviroment.Cells[PlayerType.Player1][x][y].cellType < 4) break; 
