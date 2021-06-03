@@ -13,12 +13,17 @@ class Vector2 {
   }
 
   add(another) {
-    return new Vector2(this.x + another.x, this.y + another.y);
+    //this.x += another.x;
+    //this.y += another.y;
+    return new Vector2(this.x+another.x, this.y+another.y);
   }
 
   multiply(number) {
+    //this.x *= number;
+    //this.y *= number;
     return new Vector2(this.x * number, this.y * number);
   }
+
 
   static distance(vectorFrom, vectorTo) {
     return Math.sqrt(
@@ -30,6 +35,7 @@ class Vector2 {
   static Right = new Vector2(1, 0);
   static Left = new Vector2(-1, 0);
   static Down = new Vector2(0, -1);
+  static Directions = [Vector2.Up, Vector2.Left, Vector2.Right, Vector2.Down];
 }
 
 const deltaVector = new Vector2(
@@ -160,22 +166,22 @@ class GameEnviroment {
       y = cell.localPosition.y;
     this.Cells[player][x][y].cellType = CellType.Occupied;
     if (!lastCellPosition) {
-      this.setSquearePotential(x, y, player);
+      this.setSquearePotential(cell.localPosition, player);
     } else {
-      const differenceVector = new Vector2(
+      let differenceVector = new Vector2(
         x - lastCellPosition.x,
         y - lastCellPosition.y
       );
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
-        if (
-          this.Cells[player][x + differenceVector.x][y + differenceVector.y]
-            .cellType === CellType.Empty
-        ) {
-          this.Cells[player][x + differenceVector.x][
-            y + differenceVector.y
-          ].cellType = CellType.Potential;
+        differenceVector = differenceVector.add(cell.localPosition);
+        const nextCell = this.getCell(player, differenceVector);
+        if (nextCell.cellType === CellType.Empty)
+          {
+            this.getCell(player, differenceVector).cellType = CellType.Potential;
         }
+        
       }
+      
       this.surroundCell(x, y, player);
     }
     for (let i = -1; i < 2; i += 2) {
@@ -191,8 +197,7 @@ class GameEnviroment {
       for (let k = -1; k <= 1; k++) {
         for (let m = -1; m <= 1; m++) {
           if (!checkBounds(x + k, y + m)) continue;
-          const cellType = this.Cells[player][x + k][y + m].cellType;
-          if (cellType === CellType.Occupied) continue;
+          if (this.Cells[player][x + k][y + m].cellType === CellType.Occupied) continue;
           this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
         }
       }
@@ -203,7 +208,7 @@ class GameEnviroment {
     for (let k = -1; k <= 1; k++) {
       for (let m = -1; m <= 1; m++) {
         if (!checkBounds(x + k, y + m)) continue;
-        const cellType = this.Cells[player][x + k][y + m].cell_type;
+        const cellType = this.Cells[player][x + k][y + m].cellType;
         if (cellType === CellType.Occupied || cellType === CellType.Potential)
           continue;
         this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
@@ -221,19 +226,24 @@ class GameEnviroment {
     }
   }
 
-  static isCellBlocked(x, y, player) {
-    return this.Cells[player][x][y].cellType === CellType.Blocked;
+  static isCellBlocked(cell) {
+    return cell.cellType === CellType.Blocked;
   }
 
-  static setSquearePotential(x, y, player) {
-    if (x + 1 < GRID_SIZE && !this.isCellBlocked(x + 1, y, player))
-      this.Cells[player][x + 1][y].cellType = CellType.Potential;
-    if (x - 1 > 0 && !this.isCellBlocked(x - 1, y, player))
-      this.Cells[player][x - 1][y].cellType = CellType.Potential;
-    if (y + 1 < GRID_SIZE && !this.isCellBlocked(x, y + 1, player))
-      this.Cells[player][x][y + 1].cellType = CellType.Potential;
-    if (y - 1 > 0 && !this.isCellBlocked(x, y - 1, player))
-      this.Cells[player][x][y - 1].cellType = CellType.Potential;
+  static setSquearePotential(position, player) {
+    for(let i = 0; i< Vector2.Directions.length; i++)
+    {
+      const modedPosition = Vector2.Directions[i].add(position);
+
+      if(checkBounds(modedPosition.x, modedPosition.y))
+      {
+      const cell = this.getCell(player, modedPosition);
+      if(!this.isCellBlocked(cell))
+      {
+        cell.cellType = CellType.Potential;
+      }
+    }
+    }
   }
 
   static clearSea = () => {

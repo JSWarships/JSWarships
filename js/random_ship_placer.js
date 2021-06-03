@@ -3,26 +3,12 @@
 //const GRID_SIZE = config.GridSize;
 
 class RandomPlacer {
-  static getAllPotential(player) {
-    const potential = [];
-    const Cells = GameEnviroment.Cells;
-    for (let i = 0; i < GRID_SIZE; i++) {
-      for (let j = 0; j < GRID_SIZE; j++) {
-        if (Cells[player][i][j].cellType === CellType.Potential) {
-          potential.push(new Vector2(i, j));
-        }
-      }
-    }
-    return potential;
-  }
-  static Directions = [Vector2.Up, Vector2.Left, Vector2.Right, Vector2.Down];
-
   static getPossibleDirections(cellPosition, shipSize, player) {
     const possibleCellsNumber = [0, 0, 0, 0];
     const possibleDirections = [];
     for (let i = 0; i < shipSize; i++) {
-      for (let j = 0; j < this.Directions.length; j++) {
-        const direction = this.Directions[j];
+      for (let j = 0; j < Vector2.Directions.length; j++) {
+        const direction = Vector2.Directions[j];
         const positionToCheck = cellPosition.add(direction.multiply(i));
         if (checkBounds(positionToCheck.x, positionToCheck.y))
           if (
@@ -34,7 +20,7 @@ class RandomPlacer {
     }
     for (let i = 0; i < possibleCellsNumber.length; i++) {
       if (possibleCellsNumber[i] === shipSize)
-        possibleDirections.push(this.Directions[i]);
+        possibleDirections.push(Vector2.Directions[i]);
     }
     return possibleDirections;
   }
