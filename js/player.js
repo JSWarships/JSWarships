@@ -123,7 +123,7 @@ const onPlayerClick = (mousePos) => {
     mousePos.pageY,
     PlayerType.Player1
   );
-  if (cell) console.log(cell.cellType);
+  //if (cell) console.log(cell.cellType);
   //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
     case GameState.FillingGrid:
