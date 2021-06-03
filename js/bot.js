@@ -28,7 +28,7 @@ class Bot {
         y = Math.floor(Math.random() * GRID_SIZE);
         if (GameEnviroment.Cells[player.playerType][x][y].cellType < 4) break; //checking if we hadn't already shotted
       }
-      hit = GameEnviroment.shot(x, y, player.playerType);
+      hit = GameEnviroment.shot(x, y, PlayerType.Player1);
       if (hit == 'Damaged')
         this.lastAttacked = {
           coords: [[x, y]],

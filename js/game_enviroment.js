@@ -113,7 +113,8 @@ class GameEnviroment {
     return null;
   }
 
-  static addShip(player, ship) {
+  static addShip(player, ship)
+  {
     if (!this.Ships[player]) this.Ships[player] = [];
     this.Ships[player].push(ship);
   }
@@ -250,18 +251,20 @@ class GameEnviroment {
     ctx.clearRect(0, 0, 700, 300);
   };
 
-  static getShip(x, y, player) {
+  static getShip(position, player) {
     const ships = this.Ships[player];
-    for (let i = 0; i < ships.length; i++) {
+    for (let i = 0; i<ships.length; i++) {
       const ship = ships[i];
       const shipCells = ship.cells;
       for (let j = 0; j < shipCells.length; j++) {
         const cellOfShip = shipCells[j];
         if (
-          cellOfShip.localPosition.x === x &&
-          cellOfShip.localPosition.y === y
+          cellOfShip.localPosition.x === position.x &&
+          cellOfShip.localPosition.y === position.y
         )
+        {
           return ship;
+        }
       }
     }
   }
@@ -281,17 +284,15 @@ class GameEnviroment {
     cell.cellType = CellType.Damaged;
     result = 'Damaged';
     this.drawRectangle(
-      cell.localPosition.x,
-      cell.localPosition.y,
+      cell.localPosition,
       player,
       'red'
     );
     const ship = this.getShip(
-      cell.localPosition.x,
-      cell.localPosition.y,
+      cell.localPosition,
       player
     );
-    ship.killCell(cell.position);
+    ship.killCell(cell.localPosition);
     if (!ship.checkAlive()) {
       this.refreshSea(player);
       result = 'Aimed';
@@ -302,7 +303,6 @@ class GameEnviroment {
   static shot(x, y, player) {
     let result;
     const cell = this.Cells[player][x][y];
-    console.log(cell.cellType);
     switch (cell.cellType) {
       case CellType.Occupied:
         result = this.hit(cell, player);

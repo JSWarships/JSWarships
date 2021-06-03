@@ -10,7 +10,8 @@ class Ship {
   }
 
   getCell(cellPosition) {
-    for (const shipCell in this.cells) {
+    for (let i = 0; i < this.cells.length; i++){
+      const shipCell = this.cells[i];
       if (
         shipCell.localPosition.x === cellPosition.x &&
         shipCell.localPosition.y === cellPosition.y

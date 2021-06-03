@@ -167,7 +167,7 @@ class Player {
   }
 
   attackCell(cellPosition) {
-    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, player.playerType);
+    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, PlayerType.Player2);
     GameUI.textDrawer('You ' + hit);
     GameEnviroment.GameState = GameState.FillingGrid;
     GameEnviroment.Bot.onPlayerAttacked();
@@ -185,13 +185,6 @@ class Player {
     GameEnviroment.GameState = GameState.Fighting;
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();
-    for(let ship in GameEnviroment.Ships[PlayerType.Player1])
-    {
-      for(let cell in ship.cells)
-      {
-        console.log(cell.localPosition);
-      }
-    }
   }
 
   onBotAttacked() {
