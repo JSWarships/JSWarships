@@ -62,7 +62,7 @@ class RandomPlacer {
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
         GameEnviroment.addShipCell(cell, player, null);
         ship.addCell(cell);
-        if (player === PlayerType.Player1|| true) {
+        if (player === PlayerType.Player1) {
           GameEnviroment.drawRectangle(
             cell.localPosition,
             player,
@@ -79,7 +79,7 @@ class RandomPlacer {
 
           ship.addCell(cell);
           GameEnviroment.addShipCell(cell, player, lastCellPos);
-          if (player === PlayerType.Player1 || true) {
+          if (player === PlayerType.Player1) {
             GameEnviroment.drawRectangle(
               cell.localPosition,
               player,
