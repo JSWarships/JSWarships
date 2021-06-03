@@ -164,6 +164,7 @@ class Player {
   }
 
   attackCell(cellPosition) {
+
     const hit = GameEnviroment.shot(
       cellPosition.x,
       cellPosition.y,
