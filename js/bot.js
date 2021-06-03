@@ -86,12 +86,15 @@ class Bot {
               break;
             case 'Aimed':
               this.lastAttacked = null;
+              this.nextattack = null;
               this.missstate = 0;
               break;
             case 'Missed': //if missed - return to start point
               break;
             case 'Error':
-              this.nextattack = [ ( PrevCoords[len - 1][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[len - 1][1] - ( y - PrevCoords[len - 1][1] ) ) ];
+              if ( PrevCoords.length > 2 ) this.nextattack = [ ( PrevCoords[0][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[0][1] - ( y - PrevCoords[len - 1][1] ) ) ];
+              else this.nextattack = [ ( PrevCoords[len - 1][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[len - 1][1] - ( y - PrevCoords[len - 1][1] ) ) ];
+              hit = 'Missed';
               break;
           }
         }
@@ -122,12 +125,12 @@ class Bot {
             break;
           case 'Aimed':
             this.lastAttacked = null;
+            this.nextattack = null;
             this.missstate = 0;
             break;
           default:
             this.lastAttacked.coords = [this.lastAttacked.coords[0]];
-            if ( this.lastAttacked.coords.length > 1 ) console.log ('wtf')
-            else console.log(this.lastAttacked.coords[0])
+            hit = 'Missed';
             break;
         }
       }
