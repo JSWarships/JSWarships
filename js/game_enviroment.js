@@ -15,7 +15,7 @@ class Vector2 {
   add(another) {
     //this.x += another.x;
     //this.y += another.y;
-    return new Vector2(this.x+another.x, this.y+another.y);
+    return new Vector2(this.x + another.x, this.y + another.y);
   }
 
   multiply(number) {
@@ -23,7 +23,6 @@ class Vector2 {
     //this.y *= number;
     return new Vector2(this.x * number, this.y * number);
   }
-
 
   static distance(vectorFrom, vectorTo) {
     return Math.sqrt(
@@ -144,10 +143,10 @@ class GameEnviroment {
     ctx.fillStyle = color;
     //ctx.arc(position.x+squareSize/2, position.y+squareSize/2, 1, 0, Math.PI * 2, false);
     ctx.fillRect(
-      player * playerMargin + position.x * dxy+squareSize/3,
-      position.y * dxy+squareSize/3,
-      squareSize/4,
-      squareSize/4
+      player * playerMargin + position.x * dxy + squareSize / 3,
+      position.y * dxy + squareSize / 3,
+      squareSize / 4,
+      squareSize / 4
     );
     ctx.fill();
     ctx.closePath();
@@ -175,13 +174,11 @@ class GameEnviroment {
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
         differenceVector = differenceVector.add(cell.localPosition);
         const nextCell = this.getCell(player, differenceVector);
-        if (nextCell.cellType === CellType.Empty)
-          {
-            this.getCell(player, differenceVector).cellType = CellType.Potential;
+        if (nextCell.cellType === CellType.Empty) {
+          this.getCell(player, differenceVector).cellType = CellType.Potential;
         }
-        
       }
-      
+
       this.surroundCell(x, y, player);
     }
     for (let i = -1; i < 2; i += 2) {
@@ -197,7 +194,8 @@ class GameEnviroment {
       for (let k = -1; k <= 1; k++) {
         for (let m = -1; m <= 1; m++) {
           if (!checkBounds(x + k, y + m)) continue;
-          if (this.Cells[player][x + k][y + m].cellType === CellType.Occupied) continue;
+          if (this.Cells[player][x + k][y + m].cellType === CellType.Occupied)
+            continue;
           this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
         }
       }
@@ -231,18 +229,15 @@ class GameEnviroment {
   }
 
   static setSquearePotential(position, player) {
-    for(let i = 0; i< Vector2.Directions.length; i++)
-    {
+    for (let i = 0; i < Vector2.Directions.length; i++) {
       const modedPosition = Vector2.Directions[i].add(position);
 
-      if(checkBounds(modedPosition.x, modedPosition.y))
-      {
-      const cell = this.getCell(player, modedPosition);
-      if(!this.isCellBlocked(cell))
-      {
-        cell.cellType = CellType.Potential;
+      if (checkBounds(modedPosition.x, modedPosition.y)) {
+        const cell = this.getCell(player, modedPosition);
+        if (!this.isCellBlocked(cell)) {
+          cell.cellType = CellType.Potential;
+        }
       }
-    }
     }
   }
 
@@ -250,7 +245,7 @@ class GameEnviroment {
     ctx.clearRect(0, 0, 700, 300);
   };
 
-  static getShip(x, y, player) {
+  static getShip(position, player) {
     const ships = this.Ships[player];
     for (let i = 0; i < ships.length; i++) {
       const ship = ships[i];
@@ -258,10 +253,11 @@ class GameEnviroment {
       for (let j = 0; j < shipCells.length; j++) {
         const cellOfShip = shipCells[j];
         if (
-          cellOfShip.localPosition.x === x &&
-          cellOfShip.localPosition.y === y
-        )
+          cellOfShip.localPosition.x === position.x &&
+          cellOfShip.localPosition.y === position.y
+        ) {
           return ship;
+        }
       }
     }
   }
@@ -270,7 +266,7 @@ class GameEnviroment {
     cell.cellType = CellType.Missed;
     const result = 'Missed';
     this.drawPoint(cell.localPosition, player, 'black');
-    
+
     //рисуем крестик
     //и нолик заодно
     return result;
@@ -280,18 +276,9 @@ class GameEnviroment {
     let result = 'Damaged';
     cell.cellType = CellType.Damaged;
     result = 'Damaged';
-    this.drawRectangle(
-      cell.localPosition.x,
-      cell.localPosition.y,
-      player,
-      'red'
-    );
-    const ship = this.getShip(
-      cell.localPosition.x,
-      cell.localPosition.y,
-      player
-    );
-    ship.killCell(cell.position);
+    this.drawRectangle(cell.localPosition, player, 'red');
+    const ship = this.getShip(cell.localPosition, player);
+    ship.killCell(cell.localPosition);
     if (!ship.checkAlive()) {
       this.refreshSea(player);
       result = 'Aimed';
@@ -302,7 +289,6 @@ class GameEnviroment {
   static shot(x, y, player) {
     let result;
     const cell = this.Cells[player][x][y];
-    console.log(cell.cellType);
     switch (cell.cellType) {
       case CellType.Occupied:
         result = this.hit(cell, player);
