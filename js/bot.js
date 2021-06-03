@@ -20,13 +20,22 @@ class Bot {
 
   onPlayerAttacked() {
     //x, y, player1.player_type
+    setTimeout(() => {
+      let hit = this.botAttack();
+      GameUI.textDrawer('Bot ' + hit);
+      if(hit !== 'Missed')this.onPlayerAttacked();
+      GameEnviroment.GameState = GameState.Fighting;
+    }, 2000);
+  }
+  botAttack()
+  {
     let hit;
     if (!this.lastAttacked) {
       let x, y;
       while (true) {
         x = Math.floor(Math.random() * GRID_SIZE);
         y = Math.floor(Math.random() * GRID_SIZE);
-        if (GameEnviroment.Cells[player.playerType][x][y].cellType < 4) break; //checking if we hadn't already shotted
+        if (GameEnviroment.Cells[PlayerType.Player1][x][y].cellType < 4) break; //checking if we hadn't already shotted
       }
       hit = GameEnviroment.shot(x, y, PlayerType.Player1);
       if (hit == 'Damaged')
@@ -55,7 +64,7 @@ class Bot {
             break;
           }
         }
-        hit = GameEnviroment.shot(x, y, player.playerType);
+        hit = GameEnviroment.shot(x, y, PlayerType.Player1);
         switch (hit) {
           case 'Damaged':
             this.lastAttacked.coords.push([x, y]);
@@ -83,7 +92,7 @@ class Bot {
           else x = PrevCoords[0][0]--;
           y = PrevCoords[0][1];
         }
-        hit = GameEnviroment.shot(x, y, player.playerType);
+        hit = GameEnviroment.shot(x, y, PlayerType.Player1);
         switch (hit) {
           case 'Damaged':
             this.lastAttacked.coords.push([x, y]);
@@ -97,9 +106,6 @@ class Bot {
         }
       }
     }
-    setTimeout(() => {
-      GameUI.textDrawer('Bot ' + hit);
-      GameEnviroment.GameState = GameState.Fighting;
-    }, 3000);
+    return hit;
   }
 }

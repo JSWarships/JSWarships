@@ -164,15 +164,18 @@ class Player {
   }
 
   attackCell(cellPosition) {
-
     const hit = GameEnviroment.shot(
       cellPosition.x,
       cellPosition.y,
       PlayerType.Player2
     );
+    if(hit === 'Error') return;
     GameUI.textDrawer('You ' + hit);
-    GameEnviroment.GameState = GameState.FillingGrid;
-    GameEnviroment.Bot.onPlayerAttacked();
+    if(hit == 'Missed')
+    {
+      GameEnviroment.Bot.onPlayerAttacked();
+      GameEnviroment.GameState = GameState.FillingGrid;
+    }
   }
 
   fillGridByPlayer() {
