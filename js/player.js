@@ -99,12 +99,17 @@ const fillByPlayer = (cell) => {
 };
 
 const fillRandom = () => {
+  GameUI.placeShipHide();
   RandomPlacer.fillGridRandom(PlayerType.Player1);
 };
 
 const shipsReset = () => {
   GameEnviroment.Ships[PlayerType.Player1] = [];
   GameEnviroment.drawGrid(GRID_SIZE);
+  GameUI.placeShipChange(0);
+  player.currentShipIndex = 0;
+  player.currentShipIndex = 0;
+  player.currentShip = null;
   bot.placer();
 };
 
@@ -158,7 +163,6 @@ class Player {
     window.addEventListener('click', onPlayerClick, false);
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
-    GameUI.placeShipInit();
     //this.fillGridByPlayer( );
   }
 
