@@ -6,6 +6,7 @@ const dxy = squareSize;
 const minDistanceToCell = squareSize * Math.sqrt(2) - 5;
 const GRID_SIZE = 10; //ConfigManager.getConfig().GridSize;
 
+
 class Vector2 {
   constructor(x, y) {
     this.x = x;
@@ -73,6 +74,14 @@ class GameEnviroment {
   static Player;
   static Bot;
   static GameState;
+  static Colors =
+  {
+    "0":'LightCyan',
+    "1":'DeepSkyBlue',
+    "2":'LightCyan',
+    "4":'black',
+    "5":'red'
+  };
 
   static checkLose(player) {
     const filtered = Ships[player].filter((ship) => ship.isAlive);
@@ -154,8 +163,16 @@ class GameEnviroment {
 
   static drawSea = (player) => {
     for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        this.drawRectangle(new Vector2(i, j), player, 'LightCyan');
+      for (let j = 0; j < 10; j++) 
+      {
+        const cell = this.getCell(player, new Vector2(i, j));
+        if(cell.cellType == CellType.Missed)
+        {
+          this.drawPoint(cell.localPosition, player, this.Colors[cell.cellType]);
+          continue;
+        }
+        if(cell.cellType != CellType.Occupied)
+        this.drawRectangle(new Vector2(i, j), player, this.Colors[cell.cellType]);
       }
     }
   };
@@ -179,7 +196,7 @@ class GameEnviroment {
         }
       }
 
-      this.surroundCell(x, y, player);
+      this.surroundCell(new Vector2(x, y), player, false, CellType.Blocked);
     }
     for (let i = -1; i < 2; i += 2) {
       for (let j = -1; j < 2; j += 2) {
@@ -189,27 +206,20 @@ class GameEnviroment {
     }
   }
 
-  static surroundCellBlockPotential(x, y, player) {
-    if (this.Cells[player][x][y].cellType === CellType.Occupied) {
-      for (let k = -1; k <= 1; k++) {
-        for (let m = -1; m <= 1; m++) {
-          if (!checkBounds(x + k, y + m)) continue;
-          if (this.Cells[player][x + k][y + m].cellType === CellType.Occupied)
-            continue;
-          this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
-        }
-      }
-    }
-  }
-
-  static surroundCell(x, y, player) {
+  static surroundCell(position, player, isBlockingPotential, typeToSurround) {
     for (let k = -1; k <= 1; k++) {
       for (let m = -1; m <= 1; m++) {
-        if (!checkBounds(x + k, y + m)) continue;
-        const cellType = this.Cells[player][x + k][y + m].cellType;
-        if (cellType === CellType.Occupied || cellType === CellType.Potential)
+        if (!checkBounds(position.x + k, position.y + m)) continue;
+        console.log(position);
+        const cellType = this.Cells[player][position.x + k][position.y + m].cellType;
+        if (cellType === CellType.Occupied ||
+           (cellType === CellType.Potential && !isBlockingPotential)||
+           cellType === CellType.Damaged||
+           cellType === CellType.Missed)
+           {
           continue;
-        this.Cells[player][x + k][y + m].cellType = CellType.Blocked;
+           }
+        this.Cells[player][position.x + k][position.y + m].cellType = typeToSurround;
       }
     }
   }
@@ -218,7 +228,7 @@ class GameEnviroment {
     for (let i = 0; i < GRID_SIZE; i++) {
       for (let j = 0; j < GRID_SIZE; j++) {
         if (this.Cells[player][i][j].cellType === CellType.Occupied) {
-          this.surroundCellBlockPotential(i, j, player);
+          this.surroundCell(new Vector2(i, j), player, true, CellType.Blocked);
         }
       }
     }
@@ -262,13 +272,22 @@ class GameEnviroment {
     }
   }
 
+  static surroundKilledShip (ship, player)
+  {
+    const cells = ship.cells;
+    for(let i = 0; i < cells.length; i++)
+    {
+      const position = cells[i].localPosition;
+      this.surroundCell(position, player, false, CellType.Missed);
+    }
+    console.log('surround');
+    this.drawSea(player);
+  }
+
   static miss(cell, player) {
     cell.cellType = CellType.Missed;
     const result = 'Missed';
     this.drawPoint(cell.localPosition, player, 'black');
-
-    //рисуем крестик
-    //и нолик заодно
     return result;
   }
 
@@ -301,6 +320,10 @@ class GameEnviroment {
       default:
         result = this.miss(cell, player);
         break;
+    }
+    if(result === 'Aimed')
+    {
+      this.surroundKilledShip(this.getShip(new Vector2(x, y), player),player);
     }
     return result;
   }
