@@ -123,8 +123,6 @@ const onPlayerClick = (mousePos) => {
     mousePos.pageY,
     PlayerType.Player1
   );
-  //if (cell) console.log(cell.cellType);
-  //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
     case GameState.FillingGrid:
       if (player.isFillingByPlayer) {
@@ -150,6 +148,7 @@ class Player {
     this.isFillingByPlayer = true;
     this.currentShipIndex = 0;
     this.currentShipNumber = 0;
+    this.score = 0;
     this.currentShip = null;
     this.playerType = playerType;
   }
@@ -159,7 +158,6 @@ class Player {
     window.addEventListener('click', onPlayerClick, false);
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
-    //this.fillGridByPlayer( );
   }
 
   attackCell(cellPosition) {
@@ -170,6 +168,10 @@ class Player {
     );
     if(hit === 'Error') return;
     GameUI.textDrawer('You ' + hit);
+    if (hit == 'Aimed') {
+      this.score++;
+      GameUI.updateScore();
+    }
     if(hit == 'Missed')
     {
       GameEnviroment.Bot.onPlayerAttacked();
@@ -186,6 +188,7 @@ class Player {
     GameUI.textDrawer('Starting the game...');
     GameUI.placeShipHide();
     GameUI.containerHide();
+    GameUI.showScore();
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();
   }

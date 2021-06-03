@@ -6,6 +6,7 @@ class Bot {
   constructor(emiter) {
     this.emiter = emiter;
     this.lastAttacked = null;
+    this.score = 0;
   }
 
   placer() {
@@ -19,7 +20,10 @@ class Bot {
   }
 
   onPlayerAttacked() {
-    //x, y, player1.player_type
+    if (GameEnviroment.GameState == 2) {
+      GameUI.updateScore();
+      return;
+    }
     setTimeout(() => {
       let hit = this.botAttack();
       GameUI.textDrawer('Bot ' + hit);
@@ -47,11 +51,13 @@ class Bot {
         this.lastAttacked = {
           coords: [[x, y]],
           vector: null,
-        };
+      } 
+      else if (hit == 'Aimed') {
+        this.score++;
+        GameUI.updateScore();
+      };
     } else {
       const PrevCoords = this.lastAttacked.coords;
-      //console.log('Prev coords: ' + PrevCoords[PrevCoords.length - 1]);
-      //console.log('Vector:' + this.lastAttacked.vector)
       if (this.lastAttacked.vector) {
         let x, y, anvector;
         const len = PrevCoords.length;
@@ -88,6 +94,8 @@ class Bot {
               this.lastAttacked = null;
               this.nextattack = null;
               this.missstate = 0;
+              this.score++;
+              GameUI.updateScore();
               break;
             case 'Missed': //if missed - return to start point
               break;
@@ -99,7 +107,6 @@ class Bot {
           }
         }
       } else {
-        //console.log('no vector')
         let potentialVector, x, y;
         while (true)
         {
@@ -127,6 +134,8 @@ class Bot {
             this.lastAttacked = null;
             this.nextattack = null;
             this.missstate = 0;
+            this.score++;
+            GameUI.updateScore();
             break;
           default:
             this.lastAttacked.coords = [this.lastAttacked.coords[0]];
