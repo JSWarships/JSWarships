@@ -59,7 +59,7 @@ const fillByPlayer = (cell) => {
     const addCellToEnviroment = (lastCellPosition) => {
       player.currentShip.addCell(cell);
       GameEnviroment.addShipCell(cell, player.playerType, lastCellPosition);
-      GameEnviroment.drawRectangleWithPosition(
+      GameEnviroment.drawRectangle(
         cell.localPosition,
         player.playerType,
         SHIP_ALIVE_COLOR
@@ -126,7 +126,8 @@ const onPlayerClick = (mousePos) => {
     mousePos.pageY,
     PlayerType.Player1
   );
-
+  if(cell)
+    console.log(cell.cellType);
   //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
     case GameState.FillingGrid:
@@ -184,11 +185,16 @@ class Player {
     GameEnviroment.GameState = GameState.Fighting;
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();
+    for(let ship in GameEnviroment.Ships[PlayerType.Player1])
+    {
+      for(let cell in ship.cells)
+      {
+        console.log(cell.localPosition);
+      }
+    }
   }
 
   onBotAttacked() {
     console.log('Bot attacked!');
   }
 }
-
-//module.exports = Player;
