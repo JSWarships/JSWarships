@@ -39,17 +39,21 @@ class RandomPlacer {
     }
     return possibleDirections;
   }
-
-  static fillGridRandom(player) {
-    let coords = new Vector2(0, 0);
+  
+    static cleanGrid(player) {
     const Cells = GameEnviroment.Cells;
-    let cell = GameEnviroment.Cells[player][coords.x][coords.y];
     for (let i=0; i<10; i++){
       for (let j=0; j<10; j++){
         Cells[player][i][j].cellType = CellType.Empty;
         GameEnviroment.drawRectangle(i, j, player, 'LightCyan');
       }
     }
+  }
+
+  static fillGridRandom(player) {
+    let coords = new Vector2(0, 0);
+    let cell = GameEnviroment.Cells[player][coords.x][coords.y];
+    this.cleanGrid(player);
     for (const shipSettingKey in GridSettings) {
       const shipSetting = GridSettings[shipSettingKey];
       if (shipSetting === GridSettings.getShip()) return;
@@ -87,7 +91,7 @@ class RandomPlacer {
         //console.log(direction);
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
           cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
-
+          
           ship.addCell(cell);
           GameEnviroment.addShipCell(cell, player, lastCellPos);
           GameEnviroment.drawRectangleWithPosition(
