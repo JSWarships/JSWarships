@@ -186,7 +186,6 @@ class Player {
     GameUI.textDrawer('Starting the game...');
     GameUI.placeShipHide();
     GameUI.containerHide();
-    GameEnviroment.GameState = GameState.Fighting;
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();
   }
