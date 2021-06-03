@@ -49,7 +49,8 @@ class Bot {
         )
           break; //checking if we hadn't already shotted
       }
-      hit = GameEnviroment.shot(x, y, PlayerType.Player1);
+      hit = GameEnviroment.shot(x, y, PlayerType.Player1);  
+      this.nextattack = null;
       if (hit === 'Damaged')
         this.lastAttacked = {
           coords: [[x, y]],
@@ -65,37 +66,42 @@ class Bot {
         let x, y, anvector;
         const len = PrevCoords.length;
         switch (this.lastAttacked.vector) {
-        case 'Vertical': {
-          anvector = 'Horizontal';
-          if (PrevCoords[len - 1][1] + 1 === PrevCoords[len - 2][1])
-            y = PrevCoords[len - 1][1] - 1;
-          else y = PrevCoords[len - 1][1] + 1;
-          x = PrevCoords[len - 1][0];
-          break;
+          case 'Vertical': {
+            anvector = 'Horizontal';
+            x = PrevCoords[len - 1][0];
+            if (!PrevCoords[len - 2]) {
+              y = (PrevCoords[0][1] - 1);
+              if(!GameEnviroment.Cells[PlayerType.Player1][x][y]) y = (PrevCoords[0][1] + 1);
+            }
+            else if ( (PrevCoords[len - 1][1] + 1) == PrevCoords[len - 2][1]) y = (PrevCoords[len - 1][1] - 1);
+            else y = (PrevCoords[len - 1][1] + 1);
+            break;
+          }
+          case 'Horizontal': {
+            anvector = 'Vertical';
+            if (!PrevCoords[len - 2]) {
+              x = (PrevCoords[0][0] - 1);
+              if(!GameEnviroment.Cells[PlayerType.Player1][x]) x = (PrevCoords[0][0] + 1);
+            }
+            else if ( (PrevCoords[len - 1][0] + 1) == PrevCoords[len - 2][0]) x = (PrevCoords[len - 1][0] - 1);
+            else x = (PrevCoords[len - 1][0] + 1);
+            y = PrevCoords[len - 1][1];
+            break;
+          }
         }
-        case 'Horizontal': {
-          anvector = 'Vertical';
-          if (PrevCoords[len - 1][0] + 1 === PrevCoords[len - 2][0])
-            x = PrevCoords[len - 1][0] - 1;
-          else x = PrevCoords[len - 1][0] + 1;
-          y = PrevCoords[len - 1][1];
-          break;
-        }
-        }
-        if (
-          !GameEnviroment.Cells[PlayerType.Player1][x] ||
-          !GameEnviroment.Cells[PlayerType.Player1][x][y]
-        ) {
-          if (this.missstate > 2) this.lastAttacked.vector = anvector;
+        if (!GameEnviroment.Cells[PlayerType.Player1][x] || !GameEnviroment.Cells[PlayerType.Player1][x][y])
+        {
+          if ( this.missstate > 1 ) this.lastAttacked.vector = anvector;
           else this.missstate++;
           this.lastAttacked.coords = [PrevCoords[0]];
-          hit = 'doesn\'t know what to hit';
+          hit = 'skips round';
         } else {
           hit = GameEnviroment.shot(x, y, PlayerType.Player1);
           switch (hit) {
 
             case 'Damaged':
               this.lastAttacked.coords.push([x, y]);
+              
               break;
             case 'Aimed':
               this.lastAttacked = null;
@@ -107,7 +113,7 @@ class Bot {
             case 'Missed': //if missed - return to start point
               break;
             case 'Error':
-              if ( PrevCoords.length > 2 ) this.nextattack = [ ( PrevCoords[0][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[0][1] - ( y - PrevCoords[len - 1][1] ) ) ];
+              if ( PrevCoords.length > 1 ) this.nextattack = [ ( PrevCoords[0][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[0][1] - ( y - PrevCoords[len - 1][1] ) ) ];
               else this.nextattack = [ ( PrevCoords[len - 1][0] - ( x - PrevCoords[len - 1][0] ) ), ( PrevCoords[len - 1][1] - ( y - PrevCoords[len - 1][1] ) ) ];
               hit = 'Missed';
               break;
@@ -156,7 +162,6 @@ class Bot {
         }
       }
     }
-
     return hit;
   }
 }
