@@ -34,7 +34,7 @@ const GridSettings = {
     shipSize: 4,
   },
 
-  getShip: (index) => {
+  getShip: index => {
     let i = 0;
     for (const shipSettings in GridSettings) {
       if (index === i) return GridSettings[shipSettings];
@@ -45,7 +45,7 @@ const GridSettings = {
 
 const areAllShips = () => GameEnviroment.Ships[PlayerType.Player1].length > 8;
 
-const fillByPlayer = (cell) => {
+const fillByPlayer = cell => {
   const playerShip = player.currentShip;
   if (player.isFillingByPlayer) {
     const currShipType = GridSettings.getShip(player.currentShipIndex);
@@ -56,7 +56,7 @@ const fillByPlayer = (cell) => {
       return;
     }
 
-    const addCellToEnviroment = (lastCellPosition) => {
+    const addCellToEnviroment = lastCellPosition => {
       player.currentShip.addCell(cell);
       GameEnviroment.addShipCell(cell, player.playerType, lastCellPosition);
       GameEnviroment.drawRectangle(
@@ -117,28 +117,28 @@ const startGame = () => {
   else player.finishFillingGrid();
 };
 
-const onPlayerClick = (mousePos) => {
+const onPlayerClick = mousePos => {
   let cell = GameEnviroment.findClickedCell(
     mousePos.pageX,
     mousePos.pageY,
     PlayerType.Player1
   );
   switch (GameEnviroment.GameState) {
-    case GameState.FillingGrid:
-      if (player.isFillingByPlayer) {
-        if (!cell) return;
-        fillByPlayer(cell);
-      }
-      break;
-    case GameState.Fighting:
-      cell = GameEnviroment.findClickedCell(
-        mousePos.pageX,
-        mousePos.pageY,
-        PlayerType.Player2
-      );
+  case GameState.FillingGrid:
+    if (player.isFillingByPlayer) {
       if (!cell) return;
-      player.attackCell(cell.localPosition);
-      break;
+      fillByPlayer(cell);
+    }
+    break;
+  case GameState.Fighting:
+    cell = GameEnviroment.findClickedCell(
+      mousePos.pageX,
+      mousePos.pageY,
+      PlayerType.Player2
+    );
+    if (!cell) return;
+    player.attackCell(cell.localPosition);
+    break;
   }
 };
 
@@ -166,7 +166,7 @@ class Player {
       cellPosition.y,
       PlayerType.Player2
     );
-    if(hit === 'Error') return;
+    if (hit === 'Error') return;
     GameUI.textDrawer('You ' + hit);
     if (hit == 'Aimed') {
       this.score++;

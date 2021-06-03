@@ -26,11 +26,12 @@ class RandomPlacer {
   }
 
   static cleanGrid(player) {
+    const coords = new Vector2(0, 0);
     const Cells = GameEnviroment.Cells;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         Cells[player][i][j].cellType = CellType.Empty;
-        GameEnviroment.drawRectangle(i, j, player, 'LightCyan');
+        GameEnviroment.drawRectangle(new Vector2(i, j), player, 'LightCyan');
       }
     }
   }
@@ -61,13 +62,12 @@ class RandomPlacer {
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
         GameEnviroment.addShipCell(cell, player, null);
         ship.addCell(cell);
-        if(player === PlayerType.Player1)
-        {
-        GameEnviroment.drawRectangle(
-          cell.localPosition,
-          player,
-          SHIP_ALIVE_COLOR
-        );
+        if (player === PlayerType.Player1) {
+          GameEnviroment.drawRectangle(
+            cell.localPosition,
+            player,
+            SHIP_ALIVE_COLOR
+          );
         }
         let lastCellPos = cell.localPosition;
         const direction =
@@ -79,14 +79,13 @@ class RandomPlacer {
 
           ship.addCell(cell);
           GameEnviroment.addShipCell(cell, player, lastCellPos);
-          if(player === PlayerType.Player1)
-        {
-          GameEnviroment.drawRectangle(
-            cell.localPosition,
-            player,
-            SHIP_ALIVE_COLOR
-          );
-        }
+          if (player === PlayerType.Player1) {
+            GameEnviroment.drawRectangle(
+              cell.localPosition,
+              player,
+              SHIP_ALIVE_COLOR
+            );
+          }
           lastCellPos = cell.localPosition;
         }
         GameEnviroment.addShip(player, ship);
