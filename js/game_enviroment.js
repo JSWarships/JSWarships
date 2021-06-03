@@ -210,7 +210,7 @@ class GameEnviroment {
     for (let k = -1; k <= 1; k++) {
       for (let m = -1; m <= 1; m++) {
         if (!checkBounds(position.x + k, position.y + m)) continue;
-        console.log(position);
+        //console.log(position);
         const cellType = this.Cells[player][position.x + k][position.y + m].cellType;
         if (cellType === CellType.Occupied ||
            (cellType === CellType.Potential && !isBlockingPotential)||
