@@ -36,7 +36,7 @@ class GameUI {
   }
   static startButtons() {
     this.theme = localStorage.getItem('theme');
-    if (this.theme == 'dark') this.themeSwitch();
+    if (this.theme === 'dark') this.themeSwitch();
     this.textInit();
     this.textDrawer('Select player to play with');
     this.container = document.createElement('div');

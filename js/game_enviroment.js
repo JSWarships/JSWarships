@@ -6,7 +6,6 @@ const dxy = squareSize;
 const minDistanceToCell = squareSize * Math.sqrt(2) - 5;
 const GRID_SIZE = 10; //ConfigManager.getConfig().GridSize;
 
-
 class Vector2 {
   constructor(x, y) {
     this.x = x;
@@ -74,18 +73,17 @@ class GameEnviroment {
   static Player;
   static Bot;
   static GameState;
-  static Colors =
-  {
-    "0":'LightCyan',
-    "1":'DeepSkyBlue',
-    "2":'LightCyan',
-    "4":'black',
-    "5":'red'
+  static Colors = {
+    0: 'LightCyan',
+    1: 'DeepSkyBlue',
+    2: 'LightCyan',
+    4: 'black',
+    5: 'red',
   };
 
   static checkLose(player) {
-    const filtered = Ships[player].filter((ship) => ship.isAlive);
-    return filtered == 0;
+    const filtered = Ships[player].filter(ship => ship.isAlive);
+    return filtered === 0;
   }
 
   static drawGrid(size) {
@@ -150,7 +148,6 @@ class GameEnviroment {
   static drawPoint = (position, player, color) => {
     ctx.beginPath();
     ctx.fillStyle = color;
-    //ctx.arc(position.x+squareSize/2, position.y+squareSize/2, 1, 0, Math.PI * 2, false);
     ctx.fillRect(
       player * playerMargin + position.x * dxy + squareSize / 3,
       position.y * dxy + squareSize / 3,
@@ -161,18 +158,24 @@ class GameEnviroment {
     ctx.closePath();
   };
 
-  static drawSea = (player) => {
+  static drawSea = player => {
     for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) 
-      {
+      for (let j = 0; j < 10; j++) {
         const cell = this.getCell(player, new Vector2(i, j));
-        if(cell.cellType == CellType.Missed)
-        {
-          this.drawPoint(cell.localPosition, player, this.Colors[cell.cellType]);
+        if (cell.cellType === CellType.Missed) {
+          this.drawPoint(
+            cell.localPosition,
+            player,
+            this.Colors[cell.cellType]
+          );
           continue;
         }
-        if(cell.cellType != CellType.Occupied)
-        this.drawRectangle(new Vector2(i, j), player, this.Colors[cell.cellType]);
+        if (cell.cellType !== CellType.Occupied)
+          this.drawRectangle(
+            new Vector2(i, j),
+            player,
+            this.Colors[cell.cellType]
+          );
       }
     }
   };
@@ -211,15 +214,18 @@ class GameEnviroment {
       for (let m = -1; m <= 1; m++) {
         if (!checkBounds(position.x + k, position.y + m)) continue;
         //console.log(position);
-        const cellType = this.Cells[player][position.x + k][position.y + m].cellType;
-        if (cellType === CellType.Occupied ||
-           (cellType === CellType.Potential && !isBlockingPotential)||
-           cellType === CellType.Damaged||
-           cellType === CellType.Missed)
-           {
+        const cellType =
+          this.Cells[player][position.x + k][position.y + m].cellType;
+        if (
+          cellType === CellType.Occupied ||
+          (cellType === CellType.Potential && !isBlockingPotential) ||
+          cellType === CellType.Damaged ||
+          cellType === CellType.Missed
+        ) {
           continue;
-           }
-        this.Cells[player][position.x + k][position.y + m].cellType = typeToSurround;
+        }
+        this.Cells[player][position.x + k][position.y + m].cellType =
+          typeToSurround;
       }
     }
   }
@@ -253,6 +259,8 @@ class GameEnviroment {
 
   static clearSea = () => {
     ctx.clearRect(0, 0, 700, 300);
+    this.Ships[0] = [];
+    this.Ships[1] = [];
   };
 
   static getShip(position, player) {
@@ -265,18 +273,17 @@ class GameEnviroment {
         if (
           cellOfShip.localPosition.x === position.x &&
           cellOfShip.localPosition.y === position.y
-        ) {
+        ) 
+        {
           return ship;
         }
       }
     }
   }
 
-  static surroundKilledShip (ship, player)
-  {
+  static surroundKilledShip(ship, player) {
     const cells = ship.cells;
-    for(let i = 0; i < cells.length; i++)
-    {
+    for (let i = 0; i < cells.length; i++) {
       const position = cells[i].localPosition;
       this.surroundCell(position, player, false, CellType.Missed);
     }
@@ -296,12 +303,12 @@ class GameEnviroment {
     cell.cellType = CellType.Damaged;
     result = 'Damaged';
     this.drawRectangle(cell.localPosition, player, 'red');
+    console.log(cell.localPosition);
     const ship = this.getShip(cell.localPosition, player);
     ship.killCell(cell.localPosition);
     if (!ship.checkAlive()) {
-      this.refreshSea(player);
       result = 'Aimed';
-    }
+    }    
     return result;
   }
 
@@ -309,21 +316,20 @@ class GameEnviroment {
     let result;
     const cell = this.Cells[player][x][y];
     switch (cell.cellType) {
-      case CellType.Occupied:
-        result = this.hit(cell, player);
-        break;
-      case CellType.Potential:
-      case CellType.Missed:
-      case CellType.Damaged:
-        result = 'Error';
-        break;
-      default:
-        result = this.miss(cell, player);
-        break;
+    case CellType.Occupied:
+      result = this.hit(cell, player);
+      break;
+    case CellType.Potential:
+    case CellType.Missed:
+    case CellType.Damaged:
+      result = 'Error';
+      break;
+    default:
+      result = this.miss(cell, player);
+      break;
     }
-    if(result === 'Aimed')
-    {
-      this.surroundKilledShip(this.getShip(new Vector2(x, y), player),player);
+    if (result === 'Aimed') {
+      this.surroundKilledShip(this.getShip(new Vector2(x, y), player), player);
     }
     return result;
   }
