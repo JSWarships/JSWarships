@@ -24,13 +24,14 @@ class RandomPlacer {
     }
     return possibleDirections;
   }
-
-  static cleanGrid(player) {
+  
+    static cleanGrid(player) {
+    let coords = new Vector2(0, 0);
     const Cells = GameEnviroment.Cells;
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         Cells[player][i][j].cellType = CellType.Empty;
-        GameEnviroment.drawRectangle(i, j, player, 'LightCyan');
+        GameEnviroment.drawRectangle(new Vector2(i, j), player, 'LightCyan');
       }
     }
   }
