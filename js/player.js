@@ -88,7 +88,6 @@ const fillByPlayer = (cell) => {
 
     if (player.currentShipNumber === currShipType.numberOfShips) {
       if (player.currentShipIndex === MAX_SHIP_DECKS - 1) {
-        player.finishFillingGrid();
         return;
       }
       player.currentShipIndex++;
