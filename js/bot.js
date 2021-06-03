@@ -15,12 +15,12 @@ class Bot {
   }
 
   start() {
-    this.emiter.on('PlayerAttacked', this.onPlayerAttacked);
     this.placer();
   }
 
   onPlayerAttacked() {
     //x, y, player1.player_type
+    let hit;
     if (!this.lastAttacked) {
       let x, y;
       while (true) {
@@ -28,7 +28,7 @@ class Bot {
         y = Math.floor(Math.random() * GRID_SIZE);
         if (GameEnviroment.Cells[player.playerType][x][y].cellType < 4) break; //checking if we hadn't already shotted
       }
-      const hit = GameEnviroment.shot(x, y, player.playerType);
+      hit = GameEnviroment.shot(x, y, player.playerType);
       if (hit == 'Damaged')
         this.lastAttacked = {
           coords: [[x, y]],
@@ -55,7 +55,7 @@ class Bot {
             break;
           }
         }
-        const hit = GameEnviroment.shot(x, y, player.playerType);
+        hit = GameEnviroment.shot(x, y, player.playerType);
         switch (hit) {
           case 'Damaged':
             this.lastAttacked.coords.push([x, y]);
@@ -83,7 +83,7 @@ class Bot {
           else x = PrevCoords[0][0]--;
           y = PrevCoords[0][1];
         }
-        const hit = GameEnviroment.shot(x, y, player.playerType);
+        hit = GameEnviroment.shot(x, y, player.playerType);
         switch (hit) {
           case 'Damaged':
             this.lastAttacked.coords.push([x, y]);
@@ -97,9 +97,10 @@ class Bot {
         }
       }
     }
-    this.emiter.emit('BotAttacked');
-    console.log('Bot attacked!');
+    setTimeout ( ( ) => {
+      GameUI.textDrawer('Bot ' + hit);
+      GameEnviroment.GameState = GameState.Fighting;
+    }, 3000 );
+    
   }
 }
-
-//module.exports = Bot;

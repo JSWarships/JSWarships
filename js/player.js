@@ -159,7 +159,6 @@ class Player {
 
   start() {
     shipsReset();
-    this.emiter.on('BotAttacked', this.onBotAttacked);
     window.addEventListener('click', onPlayerClick, false);
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
@@ -167,7 +166,10 @@ class Player {
   }
 
   attackCell(cellPosition) {
-    this.emiter.emit('PlayerAttacked', cellPosition);
+    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, player.playerType);
+    GameUI.textDrawer('You ' + hit);
+    GameEnviroment.GameState = GameState.FillingGrid;
+    GameEnviroment.Bot.onPlayerAttacked();
   }
 
   fillGridByPlayer() {

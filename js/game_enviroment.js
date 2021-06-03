@@ -277,6 +277,12 @@ class GameEnviroment {
   static miss(cell, player) {
     cell.cellType = CellType.Missed;
     const result = 'Missed';
+    this.drawRectangleWithPosition(
+      cell.localPosition.x,
+      cell.localPosition.y,
+      player,
+      'gray'
+    );
     //рисуем крестик
     //и нолик заодно
     return result;

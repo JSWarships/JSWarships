@@ -67,5 +67,3 @@ class GameUI {
     canvas.style.opacity = '1';
   }
 }
-
-//module.exports = GameUI;
