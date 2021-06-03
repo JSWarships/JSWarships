@@ -57,11 +57,16 @@ class GameUI {
     );
     this.container.appendChild(this.buttonCreator('Reset', 'rest', shipsReset));
     this.container.id = 'game';
-    this.container.style.display = 'inline-flex';
+    this.containerShow();
   }
   static containerHide() {
+    GameUI.container.style.opacity = 0;
+    GameUI.container.style.visibility = 'hidden';
     GameUI.container.innerHTML = '';
-    GameUI.container.style.display = 'none';
+  }
+  static containerShow() {
+    GameUI.container.style.opacity = 1;
+    GameUI.container.style.visibility = 'visible';
   }
   static showGrid() {
     const canvas = document.getElementsByClassName('canvas')[0];
@@ -72,7 +77,7 @@ class GameUI {
     GameUI.score = document.createElement('h2');
     GameUI.container.appendChild(this.score);
     GameUI.container.id = 'score';
-    GameUI.container.style.display = 'inline-flex';
+    GameUI.containerShow();
   }
   static updateScore() {
     const botScore = GameEnviroment.Bot.score;
