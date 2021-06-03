@@ -67,7 +67,7 @@ class Bot {
             break;
           }
         }
-        if (!GameEnviroment.Cells[PlayerType.Player1][x][у] || !GameEnviroment.Cells[PlayerType.Player1][x][y])
+        if (!GameEnviroment.Cells[PlayerType.Player1][x] || !GameEnviroment.Cells[PlayerType.Player1][x][y])
         {
           this.lastAttacked.coords.push(PrevCoords[0]);
           this.lastAttacked.vector = anvector;
