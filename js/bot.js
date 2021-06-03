@@ -94,7 +94,6 @@ class Bot {
       }
     }
     this.emiter.emit('BotAttacked');
-    console.log('Bot attacked!');
   }
 }
 

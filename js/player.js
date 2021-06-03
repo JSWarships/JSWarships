@@ -61,7 +61,7 @@ const fillByPlayer = (cell) => {
     const addCellToEnviroment = (lastCellPosition) => {
       player.currentShip.addCell(cell);
       GameEnviroment.addShipCell(cell, player.playerType, lastCellPosition);
-      GameEnviroment.drawRectangleWithPosition(
+      GameEnviroment.drawRectangle(
         cell.localPosition,
         player.playerType,
         SHIP_ALIVE_COLOR
@@ -155,7 +155,7 @@ class Player {
   }
 
   attackCell(cellPosition) {
-    this.emiter.emit('PlayerAttacked', cellPosition);
+    GameEnviroment.shot(cellPosition.x, cellPosition.y, PlayerType.Player2);
   }
 
   fillGridByPlayer() {
@@ -175,5 +175,3 @@ class Player {
     console.log('Bot attacked!');
   }
 }
-
-//module.exports = Player;

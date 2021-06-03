@@ -81,7 +81,7 @@ class GameEnviroment {
       for (let i = 0; i < size; i++) {
         this.Cells[player][i] = [];
         for (let j = 0; j < size; j++) {
-          this.drawRectangle(i, j, player, 'LightCyan');
+          this.drawRectangle(new Vector2(i, j), player, 'LightCyan');
           this.Cells[player][i].push(new Cell(i, j, player));
         }
       }
@@ -100,7 +100,6 @@ class GameEnviroment {
         if (
           Vector2.distance(cells[i][j].position, mousePos) <= minDistanceToCell
         ) {
-          console.log({ x: i, y: j });
           return cells[i][j];
         }
       }
@@ -113,28 +112,7 @@ class GameEnviroment {
     this.Ships[player].push(ship);
   }
 
-  static drawRectangle = (i, j, player, color) => {
-    ctx.beginPath();
-    ctx.fillStyle = 'black';
-    ctx.fillRect(
-      player * playerMargin + j * dxy,
-      i * dxy,
-      squareSize,
-      squareSize
-    );
-    ctx.fillStyle = color;
-    ctx.fillRect(
-      player * playerMargin + j * dxy + 0.5,
-      i * dxy + 0.5,
-      squareSize - 1,
-      squareSize - 1
-    );
-    ctx.fill();
-    ctx.stroke();
-    ctx.closePath();
-  };
-
-  static drawRectangleWithPosition = (position, player, color) => {
+  static drawRectangle = (position, player, color) => {
     ctx.beginPath();
     ctx.fillStyle = 'black';
     ctx.fillRect(
@@ -155,10 +133,16 @@ class GameEnviroment {
     ctx.closePath();
   };
 
-  static drawPoint = (i, j, player, color) => {
+  static drawPoint = (position, player, color) => {
     ctx.beginPath();
     ctx.fillStyle = color;
-    ctx.arc(player * 171 + 7 + j * 13, 8 + i * 15, 1, 0, Math.PI * 2, false);
+    //ctx.arc(position.x+squareSize/2, position.y+squareSize/2, 1, 0, Math.PI * 2, false);
+    ctx.fillRect(
+      player * playerMargin + position.x * dxy+squareSize/3,
+      position.y * dxy+squareSize/3,
+      squareSize/4,
+      squareSize/4
+    );
     ctx.fill();
     ctx.closePath();
   };
@@ -166,7 +150,7 @@ class GameEnviroment {
   static drawSea = (player) => {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
-        this.drawRectangle(i, j, player, 'LightCyan');
+        this.drawRectangle(new Vector2(i, j), player, 'LightCyan');
       }
     }
   };
@@ -182,8 +166,6 @@ class GameEnviroment {
         x - lastCellPosition.x,
         y - lastCellPosition.y
       );
-      console.log(lastCellPosition);
-      console.log(x + differenceVector.x);
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
         if (
           this.Cells[player][x + differenceVector.x][y + differenceVector.y]
@@ -277,6 +259,8 @@ class GameEnviroment {
   static miss(cell, player) {
     cell.cellType = CellType.Missed;
     const result = 'Missed';
+    this.drawPoint(cell.localPosition, player, 'black');
+    
     //рисуем крестик
     //и нолик заодно
     return result;
@@ -286,7 +270,7 @@ class GameEnviroment {
     let result = 'Damaged';
     cell.cellType = CellType.Damaged;
     result = 'Damaged';
-    this.drawRectangleWithPosition(
+    this.drawRectangle(
       cell.localPosition.x,
       cell.localPosition.y,
       player,
@@ -297,8 +281,8 @@ class GameEnviroment {
       cell.localPosition.y,
       player
     );
-    ship.kill_cell(cell.position);
-    if (!ship.check_alive()) {
+    ship.killCell(cell.position);
+    if (!ship.checkAlive()) {
       this.refreshSea(player);
       result = 'Aimed';
     }
@@ -308,12 +292,14 @@ class GameEnviroment {
   static shot(x, y, player) {
     let result;
     const cell = this.Cells[player][x][y];
+    console.log(cell.cellType);
     switch (cell.cellType) {
-      case 1:
+      case CellType.Occupied:
         result = this.hit(cell, player);
         break;
-      case 4:
-      case 5:
+      case CellType.Potential:
+      case CellType.Missed:
+      case CellType.Damaged:
         result = 'Error';
         break;
       default:
