@@ -167,7 +167,7 @@ class Player {
   }
 
   attackCell(cellPosition) {
-    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, player.playerType);
+    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, PlayerType.Player2);
     GameUI.textDrawer('You ' + hit);
     GameEnviroment.GameState = GameState.FillingGrid;
     GameEnviroment.Bot.onPlayerAttacked();
