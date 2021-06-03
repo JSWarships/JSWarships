@@ -26,7 +26,7 @@ class GameUI {
   static placeShipHide() {
     this.place.style.display = 'none';
   }
-  static buttonCreator (text, additional, callback) {
+  static buttonCreator(text, additional, callback) {
     const button = document.createElement('div');
     button.className = 'btn';
     button.id = additional;
@@ -41,19 +41,21 @@ class GameUI {
     this.textDrawer('Select player to play with');
     this.container = document.createElement('div');
     this.container.className = 'container';
-    const startButton = this.buttonCreator ( 'Bot', 'bot', PlayWithBot );
+    const startButton = this.buttonCreator('Bot', 'bot', PlayWithBot);
     this.container.appendChild(startButton);
     document.body.appendChild(this.container);
   }
   static startButtonsHide() {
-    this.containerHide()
+    this.containerHide();
     this.showGrid();
     this.placeButtons();
   }
   static placeButtons() {
-    this.container.appendChild(this.buttonCreator ( 'Start', 'start', startGame ));
-    this.container.appendChild(this.buttonCreator ( 'Random', 'random', fillRandom ));
-    this.container.appendChild(this.buttonCreator ( 'Reset', 'rest', shipsReset ));
+    this.container.appendChild(this.buttonCreator('Start', 'start', startGame));
+    this.container.appendChild(
+      this.buttonCreator('Random', 'random', fillRandom)
+    );
+    this.container.appendChild(this.buttonCreator('Reset', 'rest', shipsReset));
     this.container.id = 'game';
     this.container.style.display = 'inline-flex';
   }

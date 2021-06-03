@@ -118,23 +118,20 @@ const startGame = () => {
   else player.finishFillingGrid();
 };
 
-
-
 const onPlayerClick = (mousePos) => {
   let cell = GameEnviroment.findClickedCell(
     mousePos.pageX,
     mousePos.pageY,
     PlayerType.Player1
   );
-  if(cell)
-    console.log(cell.cellType);
+  if (cell) console.log(cell.cellType);
   //here is some kind of attack we don't have
   switch (GameEnviroment.GameState) {
     case GameState.FillingGrid:
       if (player.isFillingByPlayer) {
         if (!cell) return;
         fillByPlayer(cell);
-      };
+      }
       break;
     case GameState.Fighting:
       cell = GameEnviroment.findClickedCell(
@@ -167,7 +164,11 @@ class Player {
   }
 
   attackCell(cellPosition) {
-    const hit = GameEnviroment.shot(cellPosition.x, cellPosition.y, PlayerType.Player2);
+    const hit = GameEnviroment.shot(
+      cellPosition.x,
+      cellPosition.y,
+      PlayerType.Player2
+    );
     GameUI.textDrawer('You ' + hit);
     GameEnviroment.GameState = GameState.FillingGrid;
     GameEnviroment.Bot.onPlayerAttacked();

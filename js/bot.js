@@ -97,10 +97,9 @@ class Bot {
         }
       }
     }
-    setTimeout ( ( ) => {
+    setTimeout(() => {
       GameUI.textDrawer('Bot ' + hit);
       GameEnviroment.GameState = GameState.Fighting;
-    }, 3000 );
-    
+    }, 3000);
   }
 }

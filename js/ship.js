@@ -10,7 +10,7 @@ class Ship {
   }
 
   getCell(cellPosition) {
-    for (let i = 0; i < this.cells.length; i++){
+    for (let i = 0; i < this.cells.length; i++) {
       const shipCell = this.cells[i];
       if (
         shipCell.localPosition.x === cellPosition.x &&
