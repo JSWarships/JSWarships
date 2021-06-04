@@ -2,7 +2,7 @@
 
 Browser warships game. KPI, FICT, 2021.
 
-To play enough join to the game by the (link)[https://jswarships.github.io/JSWarships/]
+To play enough join to the game by the [link](https://jswarships.github.io/JSWarships/)
 
 To switch theme - click on the ship in circle on the top of the page.
 
