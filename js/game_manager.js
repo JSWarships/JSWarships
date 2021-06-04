@@ -1,3 +1,5 @@
+'use strict';
+
 class GM {
   static areAllShips() {
     return GameEnviroment.Ships[CFG.PlayerType.Player1].length > 8;

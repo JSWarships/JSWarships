@@ -1,3 +1,5 @@
+'use strict';
+
 class GameUI {
   static show(element) {
     element.style.visibility = 'visible';
@@ -63,8 +65,8 @@ class GameUI {
     GameUI.container.appendChild(
       GameUI.buttonCreator('Random', 'random', GM.fillRandom)
     );
-    GameUI.container.appendChild(GameUI.
-      buttonCreator('Reset', 'rest', GM.shipsReset)
+    GameUI.container.appendChild(
+      GameUI.buttonCreator('Reset', 'rest', GM.shipsReset)
     );
     GameUI.container.id = 'game';
     GameUI.show(GameUI.container);
@@ -85,12 +87,12 @@ class GameUI {
       GameUI.hide(GameUI.container);
       GameEnviroment.GameState = 2;
       switch (botScore) {
-      case 9:
-        GameUI.textDrawer('Bot WON!');
-        break;
-      default:
-        GameUI.textDrawer('Player WON!');
-        break;
+        case 9:
+          GameUI.textDrawer('Bot WON!');
+          break;
+        default:
+          GameUI.textDrawer('Player WON!');
+          break;
       }
     }
   }

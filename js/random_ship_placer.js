@@ -1,6 +1,4 @@
-//const config = ConfigManager.getConfig();
-//const SHIP_ALIVE_COLOR = config.ShipAliveColor;
-//const GRID_SIZE = config.GridSize;
+'use strict';
 
 class RandomPlacer {
   static getPossibleDirections(cellPosition, shipSize, player) {
