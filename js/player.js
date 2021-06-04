@@ -6,7 +6,7 @@ const fillByPlayer = cell => {
     const currShipType = getShip(GameEnviroment.Player.currentShipIndex);
     if (GM.areAllShips()) return;
 
-    if (cell.cellType === CellType.Occupied) {
+    if (cell.isOccupied()) {
       console.warn('Occupied');
       return;
     }
@@ -22,13 +22,13 @@ const fillByPlayer = cell => {
     };
 
     if (!GameEnviroment.Player.currentShip) {
-      if (cell.cellType === CellType.Empty) {
+      if (cell.isEmpty()) {
         GameEnviroment.Player.currentShip = new Ship(currShipType.shipSize);
         addCellToEnviroment(null);
       } else return;
     }
 
-    if (cell.cellType === CellType.Potential) {
+    if (cell.isPotential()) {
       const celsInShip = playerShip.cells.length;
       addCellToEnviroment(playerShip.cells[celsInShip - 1].localPosition);
     }

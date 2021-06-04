@@ -9,10 +9,7 @@ class RandomPlacer {
         const direction = Vector2.Directions[j];
         const positionToCheck = cellPosition.add(direction.multiply(i));
         if (checkBounds(positionToCheck.x, positionToCheck.y))
-          if (
-            GameEnviroment.getCell(player, positionToCheck).cellType ===
-            CellType.Empty
-          )
+          if (GameEnviroment.getCell(player, positionToCheck).isEmpty())
             possibleCellsNumber[j]++;
       }
     }

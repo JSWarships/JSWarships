@@ -13,6 +13,10 @@ class Vector2 {
   multiply(number) {
     return new Vector2(this.x * number, this.y * number);
   }
+  
+  compare(another){
+    return this.x === another.x && this.y === another.y;
+  }
 
   static distance(vectorFrom, vectorTo) {
     return Math.sqrt(
@@ -46,6 +50,37 @@ class Cell {
     this.localPosition = new Vector2(x, y);
     this.cellType = CellType.Empty;
   }
+
+  isEmpty()
+  {
+    return this.cellType === CellType.Empty;
+  }
+
+  isDamaged()
+  {
+    return this.cellType === CellType.Damaged;
+  }
+
+  isOccupied()
+  {
+    return this.cellType === CellType.Occupied;
+  }
+
+  isMissed()
+  {
+    return this.cellType === CellType.Missed;
+  }
+
+  isPotential()
+  {
+    return this.cellType === CellType.Potential;
+  }
+  
+  isBlocked()
+  {
+    return this.cellType === CellType.Blocked;
+  }
+
 }
 
 const getShip  = (index) =>

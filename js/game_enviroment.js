@@ -81,7 +81,7 @@ class GameEnviroment {
     for (let i = 0; i < 10; i++) {
       for (let j = 0; j < 10; j++) {
         const cell = this.getCell(player, new Vector2(i, j));
-        if (cell.cellType === CellType.Missed) {
+        if (cell.isMissed()) {
           this.drawPoint(
             cell.localPosition,
             player,
@@ -89,7 +89,7 @@ class GameEnviroment {
           );
           continue;
         }
-        if (cell.cellType !== CellType.Occupied)
+        if (!cell.isOccupied())
           this.drawRectangle(
             new Vector2(i, j),
             player,
@@ -113,7 +113,7 @@ class GameEnviroment {
       if (checkBounds(x + differenceVector.x, y + differenceVector.y)) {
         differenceVector = differenceVector.add(cell.localPosition);
         const nextCell = this.getCell(player, differenceVector);
-        if (nextCell.cellType === CellType.Empty) {
+        if (nextCell.isEmpty()) {
           this.getCell(player, differenceVector).cellType = CellType.Potential;
         }
       }
@@ -132,19 +132,16 @@ class GameEnviroment {
     for (let k = -1; k <= 1; k++) {
       for (let m = -1; m <= 1; m++) {
         if (!checkBounds(position.x + k, position.y + m)) continue;
-        //console.log(position);
-        const cellType =
-          this.Cells[player][position.x + k][position.y + m].cellType;
-        if (
-          cellType === CellType.Occupied ||
-          (cellType === CellType.Potential && !isBlockingPotential) ||
-          cellType === CellType.Damaged ||
-          cellType === CellType.Missed
-        ) {
-          continue;
-        }
-        this.Cells[player][position.x + k][position.y + m].cellType =
-          typeToSurround;
+        const modedPosition = position.add(new Vector2(k, m));
+        const cell = this.getCell(player, modedPosition);
+
+        const isPotential = (cell.isPotential() && !isBlockingPotential);
+        const isOccupiedOrPotential = cell.isOccupied() || isPotential;
+        const isDamagedOrMissed = cell.isDamaged() || cell.isMissed();
+
+        if (isOccupiedOrPotential || isDamagedOrMissed) continue;
+        
+        cell.cellType = typeToSurround;
       }
     }
   }
@@ -152,7 +149,7 @@ class GameEnviroment {
   static refreshSea(player) {
     for (let i = 0; i < CFG.gridSize; i++) {
       for (let j = 0; j < CFG.gridSize; j++) {
-        if (this.Cells[player][i][j].cellType === CellType.Occupied) {
+        if (this.Cells[player][i][j].isOccupied()) {
           this.surroundCell(
             new Vector2(i, j), player, true, CellType.Blocked
           );
@@ -171,7 +168,7 @@ class GameEnviroment {
 
       if (checkBounds(modedPosition.x, modedPosition.y)) {
         const cell = this.getCell(player, modedPosition);
-        if (!this.isCellBlocked(cell)) {
+        if (!cell.isBlocked()) {
           cell.cellType = CellType.Potential;
         }
       }
@@ -199,10 +196,8 @@ class GameEnviroment {
       const shipCells = ship.cells;
       for (let j = 0; j < shipCells.length; j++) {
         const cellOfShip = shipCells[j];
-        if (
-          cellOfShip.localPosition.x === position.x &&
-          cellOfShip.localPosition.y === position.y
-        ) {
+        if (cellOfShip.localPosition.compare(position))
+        {
           return ship;
         }
       }
@@ -244,15 +239,14 @@ class GameEnviroment {
     const cell = this.Cells[player][x][y];
     const ship = this.getShip(cell.localPosition, player);
     if (!ship) {
-      if (cell.cellType === CellType.Empty ||
-         cell.cellType === CellType.Blocked) {
+      if (cell.isEmpty() || cell.isBlocked()) {
         return this.miss(cell, player);
       } else {
         return 'Error';
       }
     }
 
-    if (cell.cellType === CellType.Damaged) {
+    if (cell.isDamaged()) {
       return 'Error';
     }
     const result = this.hit(cell, player);
