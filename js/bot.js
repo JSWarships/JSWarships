@@ -8,7 +8,7 @@ class Bot {
   }
 
   placer() {
-    while (RandomPlacer.fillGridRandom(CFG.PlayerType.Player2) === 'Error') {
+    while (RandomPlacer.fillGridRandom(PlayerType.Player2) === 'Error') {
       GameEnviroment.clearSea();
     }
   }
@@ -32,7 +32,7 @@ class Bot {
         GameUI.updateScore();
         this.onPlayerAttacked();
       } else if (hit !== 'Damaged')
-        GameEnviroment.GameState = CFG.GameState.Fighting;
+        GameEnviroment.GameState = GameState.Fighting;
       else this.onPlayerAttacked();
     }, 2000);
   }
@@ -40,15 +40,15 @@ class Bot {
     let x, y, hit;
     this.nextattack = null;
     while (true) {
-      x = Math.floor(Math.random() * CFG.GridSize);
-      y = Math.floor(Math.random() * CFG.GridSize);
+      x = Math.floor(Math.random() * CFG.gridSize);
+      y = Math.floor(Math.random() * CFG.gridSize);
       if (
-        GameEnviroment.Cells[CFG.PlayerType.Player1][x][y] &&
-        GameEnviroment.Cells[CFG.PlayerType.Player1][x][y].cellType < 4
+        GameEnviroment.Cells[PlayerType.Player1][x][y] &&
+        GameEnviroment.Cells[PlayerType.Player1][x][y].cellType < 4
       )
         break; //checking if we hadn't already shotted
     }
-    hit = GameEnviroment.shot(x, y, CFG.PlayerType.Player1);
+    hit = GameEnviroment.shot(x, y, PlayerType.Player1);
     if (hit === 'Damaged')
       this.lastAttacked = {
         coords: [[x, y]],
@@ -65,7 +65,7 @@ class Bot {
       x = PrevCoords[len - 1][0];
       if (!PrevCoords[len - 2]) {
         y = (PrevCoords[0][1] - 1);
-        if (!GameEnviroment.Cells[CFG.PlayerType.Player1][x][y])
+        if (!GameEnviroment.Cells[PlayerType.Player1][x][y])
           y = (PrevCoords[0][1] + 1);
       } else if ((PrevCoords[len - 1][1] + 1) == PrevCoords[len - 2][1]) y = (PrevCoords[len - 1][1] - 1);
       else y = (PrevCoords[len - 1][1] + 1);
@@ -75,7 +75,7 @@ class Bot {
       anvector = 'Vertical';
       if (!PrevCoords[len - 2]) {
         x = (PrevCoords[0][0] - 1);
-        if (!GameEnviroment.Cells[CFG.PlayerType.Player1][x])
+        if (!GameEnviroment.Cells[PlayerType.Player1][x])
           x = (PrevCoords[0][0] + 1);
       } else
       if ((PrevCoords[len - 1][0] + 1) == PrevCoords[len - 2][0])
@@ -85,14 +85,14 @@ class Bot {
       break;
     }
     }
-    if (!GameEnviroment.Cells[CFG.PlayerType.Player1][x] ||
-      !GameEnviroment.Cells[CFG.PlayerType.Player1][x][y]) {
+    if (!GameEnviroment.Cells[PlayerType.Player1][x] ||
+      !GameEnviroment.Cells[PlayerType.Player1][x][y]) {
       if (this.missstate > 1) this.lastAttacked.vector = anvector;
       else this.missstate++;
       this.lastAttacked.coords = [PrevCoords[0]];
       hit = 'skips round';
     } else {
-      hit = GameEnviroment.shot(x, y, CFG.PlayerType.Player1);
+      hit = GameEnviroment.shot(x, y, PlayerType.Player1);
       switch (hit) {
       case 'Damaged':
         this.lastAttacked.coords.push([x, y]);
@@ -126,14 +126,14 @@ class Bot {
         y = PrevCoords[0][1];
       }
       if (
-        GameEnviroment.Cells[CFG.PlayerType.Player1][x] &&
-        GameEnviroment.Cells[CFG.PlayerType.Player1][x][y] &&
-        GameEnviroment.Cells[CFG.PlayerType.Player1][x][y].cellType < 4
+        GameEnviroment.Cells[PlayerType.Player1][x] &&
+        GameEnviroment.Cells[PlayerType.Player1][x][y] &&
+        GameEnviroment.Cells[PlayerType.Player1][x][y].cellType < 4
       )
         break;
     }
 
-    hit = GameEnviroment.shot(x, y, CFG.PlayerType.Player1);
+    hit = GameEnviroment.shot(x, y, PlayerType.Player1);
     switch (hit) {
     case 'Damaged':
       this.lastAttacked.coords.push([x, y]);
@@ -153,7 +153,7 @@ class Bot {
     if (this.nextattack && this.lastAttacked) {
       const temporary = this.nextattack;
       this.nextattack = null;
-      hit = GameEnviroment.shot(temporary[0], temporary[1], CFG.PlayerType.Player1);
+      hit = GameEnviroment.shot(temporary[0], temporary[1], PlayerType.Player1);
       if (hit == 'Damaged') {
         const first = this.lastAttacked.coords[0];
         this.lastAttacked.coords = [ first, temporary ];
