@@ -14,10 +14,7 @@ class Ship {
   getCell(cellPosition) {
     for (let i = 0; i < this.cells.length; i++) {
       const shipCell = this.cells[i];
-      if (
-        shipCell.localPosition.x === cellPosition.x &&
-        shipCell.localPosition.y === cellPosition.y
-      ) {
+      if (shipCell.localPosition.compare(cellPosition)){
         return shipCell;
       }
     }
@@ -25,7 +22,7 @@ class Ship {
 
   checkAlive() {
     const filtered = this.cells.filter(
-      (shipCell) => shipCell.cellType !== CellType.Damaged
+      (shipCell) => !shipCell.isDamaged()
     );
     return filtered.length > 0;
   }
