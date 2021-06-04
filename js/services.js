@@ -1,3 +1,5 @@
+'use strict';
+
 class Vector2 {
   constructor(x, y) {
     this.x = x;
@@ -18,11 +20,11 @@ class Vector2 {
     );
   }
 
-    static Up = new Vector2(0, 1);
-    static Right = new Vector2(1, 0);
-    static Left = new Vector2(-1, 0);
-    static Down = new Vector2(0, -1);
-    static Directions = [Vector2.Up, Vector2.Left, Vector2.Right, Vector2.Down];
+  static Up = new Vector2(0, 1);
+  static Right = new Vector2(1, 0);
+  static Left = new Vector2(-1, 0);
+  static Down = new Vector2(0, -1);
+  static Directions = [Vector2.Up, Vector2.Left, Vector2.Right, Vector2.Down];
 }
 
 const deltaVector = new Vector2(
