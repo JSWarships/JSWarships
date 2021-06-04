@@ -5,7 +5,7 @@ const bot = new Bot(emit);
 //const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
 
 document.addEventListener('DOMContentLoaded', () => {
-  GameUI.startButtons();
+  GameUI.start();
 });
 
 function initializePlayers() {

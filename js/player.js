@@ -43,13 +43,11 @@ const GridSettings = {
   },
 };
 
-const areAllShips = () => GameEnviroment.Ships[PlayerType.Player1].length > 8;
-
 const fillByPlayer = cell => {
-  const playerShip = player.currentShip;
-  if (player.isFillingByPlayer) {
-    const currShipType = GridSettings.getShip(player.currentShipIndex);
-    if (areAllShips()) return;
+  const playerShip = GameEnviroment.Player.currentShip;
+  if (GameEnviroment.Player.isFillingByPlayer) {
+    const currShipType = GridSettings.getShip(GameEnviroment.Player.currentShipIndex);
+    if (GM.areAllShips()) return;
 
     if (cell.cellType === CellType.Occupied) {
       console.warn('Occupied');
@@ -57,8 +55,8 @@ const fillByPlayer = cell => {
     }
 
     const addCellToEnviroment = lastCellPosition => {
-      player.currentShip.addCell(cell);
-      GameEnviroment.addShipCell(cell, player.playerType, lastCellPosition);
+      GameEnviroment.Player.currentShip.addCell(cell);
+      GameEnviroment.addShipCell(cell, GameEnviroment.Player.playerType, lastCellPosition);
       GameEnviroment.drawRectangle(
         cell.localPosition,
         player.playerType,
@@ -66,9 +64,9 @@ const fillByPlayer = cell => {
       );
     };
 
-    if (!player.currentShip) {
+    if (!GameEnviroment.Player.currentShip) {
       if (cell.cellType === CellType.Empty) {
-        player.currentShip = new Ship(currShipType.shipSize);
+        GameEnviroment.Player.currentShip = new Ship(currShipType.shipSize);
         addCellToEnviroment(null);
       } else return;
     }
@@ -79,42 +77,22 @@ const fillByPlayer = cell => {
     }
 
     if (player.currentShip.cells.length === currShipType.shipSize) {
-      player.currentShipNumber++;
-      GameEnviroment.addShip(PlayerType.Player1, player.currentShip);
-      GameEnviroment.refreshSea(player.playerType);
+      GameEnviroment.Player.currentShipNumber++;
+      GameEnviroment.addShip(PlayerType.Player1, GameEnviroment.Player.currentShip);
+      GameEnviroment.refreshSea(GameEnviroment.Player.playerType);
       console.log('refreshed');
-      player.currentShip = null;
+      GameEnviroment.Player.currentShip = null;
     }
 
-    if (player.currentShipNumber === currShipType.numberOfShips) {
-      if (player.currentShipIndex === MAX_SHIP_DECKS - 1) {
+    if (GameEnviroment.Player.currentShipNumber === currShipType.numberOfShips) {
+      if (GameEnviroment.Player.currentShipIndex === MAX_SHIP_DECKS - 1) {
         return;
       }
-      player.currentShipIndex++;
-      player.currentShipNumber = 0;
-      GameUI.placeShipChange(player.currentShipIndex);
+      GameEnviroment.Player.currentShipIndex++;
+      GameEnviroment.Player.currentShipNumber = 0;
+      GameUI.placeShipChange(GameEnviroment.Player.currentShipIndex);
     }
   }
-};
-
-const fillRandom = () => {
-  GameUI.placeShipHide();
-  RandomPlacer.fillGridRandom(PlayerType.Player1);
-};
-
-const shipsReset = () => {
-  GameEnviroment.Ships[PlayerType.Player1] = [];
-  GameEnviroment.drawGrid(GRID_SIZE);
-  GameUI.placeShipChange(0);
-  player.currentShipIndex = 0;
-  player.currentShipIndex = 0;
-  player.currentShip = null;
-  bot.placer();
-};
-
-const startGame = () => {
-  if (!areAllShips()) GameUI.textDrawer('Not all the ships placed!');
-  else player.finishFillingGrid();
 };
 
 const onPlayerClick = mousePos => {
@@ -125,7 +103,7 @@ const onPlayerClick = mousePos => {
   );
   switch (GameEnviroment.GameState) {
   case GameState.FillingGrid:
-    if (player.isFillingByPlayer) {
+    if (GameEnviroment.Player.isFillingByPlayer) {
       if (!cell) return;
       fillByPlayer(cell);
     }
@@ -137,7 +115,7 @@ const onPlayerClick = mousePos => {
       PlayerType.Player2
     );
     if (!cell) return;
-    player.attackCell(cell.localPosition);
+    GameEnviroment.Player.attackCell(cell.localPosition);
     break;
   }
 };
@@ -154,7 +132,7 @@ class Player {
   }
 
   start() {
-    shipsReset();
+    GM.shipsReset();
     window.addEventListener('click', onPlayerClick, false);
     console.log('Player initiated!');
     GameUI.textDrawer('Player, place your ships!');
@@ -186,8 +164,8 @@ class Player {
   finishFillingGrid() {
     console.log('Filling is finished, starting the game...');
     GameUI.textDrawer('Starting the game...');
-    GameUI.placeShipHide();
-    GameUI.containerHide();
+    GameUI.hide(GameUI.place);
+    GameUI.hide(GameUI.container);
     GameUI.showScore();
     this.isFillingByPlayer = false;
     GameEnviroment.Bot.onPlayerAttacked();

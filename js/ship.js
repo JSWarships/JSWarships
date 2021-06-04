@@ -25,7 +25,6 @@ class Ship {
     const filtered = this.cells.filter(
       shipCell => shipCell.cellType !== CellType.Damaged
     );
-    console.log(filtered.length);
     return filtered.length > 0;
   }
 
