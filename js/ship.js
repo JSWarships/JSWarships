@@ -25,7 +25,7 @@ class Ship {
 
   checkAlive() {
     const filtered = this.cells.filter(
-      shipCell => shipCell.cellType !== CFG.CellType.Damaged
+      (shipCell) => shipCell.cellType !== CFG.CellType.Damaged
     );
     return filtered.length > 0;
   }

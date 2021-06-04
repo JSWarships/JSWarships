@@ -1,6 +1,4 @@
-//const config = ConfigManager.getConfig();
-//const GRID_SIZE = config.getConfig().GridSize;
-//const PLAYER = GameEnviroment.Player;
+'use strict';
 
 class Bot {
   constructor(emiter) {
