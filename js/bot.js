@@ -36,7 +36,7 @@ class Bot {
       } else if (hit !== 'Damaged')
         GameEnviroment.GameState = CFG.GameState.Fighting;
       else this.onPlayerAttacked();
-    }, 100);
+    }, 2000);
   }
   botAttack() {
     let hit;
