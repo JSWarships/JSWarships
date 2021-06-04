@@ -1,8 +1,8 @@
-const emit = new EventEmitter();
-const player = new Player(emit, PlayerType.Player1);
-const bot = new Bot(emit);
+'use strict';
 
-//const GRID_SIZE = 10;//ConfigManager.getConfig().GridSize;
+const emit = new EventEmitter();
+const player = new Player(emit, CFG.PlayerType.Player1);
+const bot = new Bot(emit);
 
 document.addEventListener('DOMContentLoaded', () => {
   GameUI.start();
@@ -15,9 +15,9 @@ function initializePlayers() {
 
 function PlayWithBot() {
   GameUI.startButtonsHide();
-  GameEnviroment.drawGrid(GRID_SIZE);
+  GameEnviroment.drawGrid();
   initializePlayers();
-  GameEnviroment.GameState = GameState.FillingGrid;
+  GameEnviroment.GameState = CFG.GameState.FillingGrid;
   setTimeout(() => {
     player.start();
     bot.start();

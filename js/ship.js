@@ -1,3 +1,5 @@
+'use strict';
+
 class Ship {
   constructor(size) {
     this.cells = [];
@@ -23,14 +25,14 @@ class Ship {
 
   checkAlive() {
     const filtered = this.cells.filter(
-      shipCell => shipCell.cellType !== CellType.Damaged
+      shipCell => shipCell.cellType !== CFG.CellType.Damaged
     );
     return filtered.length > 0;
   }
 
   killCell(cellPosition) {
     const cell = this.getCell(cellPosition);
-    cell.cellType = CellType.Damaged;
+    cell.cellType = CFG.CellType.Damaged;
     this.isAlive = this.checkAlive();
   }
 
