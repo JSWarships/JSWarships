@@ -3,11 +3,10 @@
 const fillByPlayer = cell => {
   const playerShip = GameEnviroment.Player.currentShip;
   if (GameEnviroment.Player.isFillingByPlayer) {
-    const currShipType = CFG.GridSettings.
-      getShip(GameEnviroment.Player.currentShipIndex);
+    const currShipType = getShip(GameEnviroment.Player.currentShipIndex);
     if (GM.areAllShips()) return;
 
-    if (cell.cellType === CFG.CellType.Occupied) {
+    if (cell.cellType === CellType.Occupied) {
       console.warn('Occupied');
       return;
     }
@@ -18,18 +17,18 @@ const fillByPlayer = cell => {
       GameEnviroment.drawRectangle(
         cell.localPosition,
         player.playerType,
-        CFG.Colors[CFG.CellType.Occupied]
+        CFG.colors[CellType.Occupied]
       );
     };
 
     if (!GameEnviroment.Player.currentShip) {
-      if (cell.cellType === CFG.CellType.Empty) {
+      if (cell.cellType === CellType.Empty) {
         GameEnviroment.Player.currentShip = new Ship(currShipType.shipSize);
         addCellToEnviroment(null);
       } else return;
     }
 
-    if (cell.cellType === CFG.CellType.Potential) {
+    if (cell.cellType === CellType.Potential) {
       const celsInShip = playerShip.cells.length;
       addCellToEnviroment(playerShip.cells[celsInShip - 1].localPosition);
     }
@@ -39,7 +38,7 @@ const fillByPlayer = cell => {
     ) {
       GameEnviroment.Player.currentShipNumber++;
       GameEnviroment.addShip(
-        CFG.PlayerType.Player1, GameEnviroment.Player.currentShip
+        PlayerType.Player1, GameEnviroment.Player.currentShip
       );
       GameEnviroment.refreshSea(GameEnviroment.Player.playerType);
       console.log('refreshed');
@@ -47,7 +46,7 @@ const fillByPlayer = cell => {
     }
 
     if (GameEnviroment.Player.currentShipNumber === currShipType.numberOfShips) {
-      if (GameEnviroment.Player.currentShipIndex === CFG.MaxShipDecks - 1) {
+      if (GameEnviroment.Player.currentShipIndex === CFG.maxShipDecks - 1) {
         return;
       }
       GameEnviroment.Player.currentShipIndex++;
@@ -61,20 +60,20 @@ const onPlayerClick = mousePos => {
   let cell = GameEnviroment.findClickedCell(
     mousePos.pageX,
     mousePos.pageY,
-    CFG.PlayerType.Player1
+    PlayerType.Player1
   );
   switch (GameEnviroment.GameState) {
-  case CFG.GameState.FillingGrid:
+  case GameState.FillingGrid:
     if (GameEnviroment.Player.isFillingByPlayer) {
       if (!cell) return;
       fillByPlayer(cell);
     }
     break;
-  case CFG.GameState.Fighting:
+  case GameState.Fighting:
     cell = GameEnviroment.findClickedCell(
       mousePos.pageX,
       mousePos.pageY,
-      CFG.PlayerType.Player2
+      PlayerType.Player2
     );
     if (!cell) return;
     GameEnviroment.Player.attackCell(cell.localPosition);
@@ -104,7 +103,7 @@ class Player {
     const hit = GameEnviroment.shot(
       cellPosition.x,
       cellPosition.y,
-      CFG.PlayerType.Player2
+      PlayerType.Player2
     );
     if (hit === 'Error') return;
     GameUI.textDrawer('You ' + hit);
@@ -114,7 +113,7 @@ class Player {
     }
     if (hit === 'Missed') {
       GameEnviroment.Bot.onPlayerAttacked();
-      GameEnviroment.GameState = CFG.GameState.FillingGrid;
+      GameEnviroment.GameState = GameState.FillingGrid;
     }
   }
 

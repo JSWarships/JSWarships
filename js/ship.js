@@ -25,14 +25,14 @@ class Ship {
 
   checkAlive() {
     const filtered = this.cells.filter(
-      (shipCell) => shipCell.cellType !== CFG.CellType.Damaged
+      (shipCell) => shipCell.cellType !== CellType.Damaged
     );
     return filtered.length > 0;
   }
 
   killCell(cellPosition) {
     const cell = this.getCell(cellPosition);
-    cell.cellType = CFG.CellType.Damaged;
+    cell.cellType = CellType.Damaged;
     this.isAlive = this.checkAlive();
   }
 

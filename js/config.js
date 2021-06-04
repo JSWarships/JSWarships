@@ -1,49 +1,43 @@
 'use strict';
 
-class CFG {
-  static Canvas = document.getElementById('myCanvas');
-  static Ctx = CFG.Canvas.getContext('2d');
-  static SquareSize = 30;
-  static PlayerMargin = CFG.SquareSize * 12;
-  static Dxy = CFG.SquareSize;
-  static MinDistanceToCell = CFG.SquareSize * Math.sqrt(2) - 5;
-  static GridSize = 10;
-
-  static Colors = {
-    0: 'LightCyan',
-    1: 'DeepSkyBlue',
-    2: 'LightCyan',
-    4: 'black',
-    5: 'red',
-  };
-
-  static CellType = {
+const CellType = {
     Empty: 0,
     Occupied: 1,
     Blocked: 2,
     Potential: 3,
     Missed: 4,
-    Damaged: 5,
+    Damaged: 5
   };
 
-  static PlayerType = {
+  const PlayerType = {
     Player1: 1,
-    Player2: 0,
+    Player2: 0
   };
 
-  static MaxShipDecks = 4;
-
-  static staticPlayerType = {
-    Player2: 0,
-    Player1: 1,
-  };
-
-  static GameState = {
+  const GameState = {
     FillingGrid: 0,
-    Fighting: 1,
+    Fighting: 1
   };
 
-  static GridSettings = {
+const CFG = {
+  "canvas": document.getElementById('myCanvas'),
+  "ctx": document.getElementById('myCanvas').getContext('2d'),
+  "squareSize": 30,
+  "playerMargin": 30 * 12,
+  "dxy": 30,
+  "minDistanceToCell": 30 * Math.sqrt(2) - 5,
+  "gridSize": 10,
+  "maxShipDecks": 4,
+
+  "colors":{
+    0: 'LightCyan',
+    1: 'DeepSkyBlue',
+    2: 'LightCyan',
+    4: 'black',
+    5: 'red',
+  }, 
+  
+  "gridSettings": {
     OneDeck: {
       numberOfShips: 4,
       shipSize: 1,
@@ -62,14 +56,6 @@ class CFG {
     FourDeck: {
       numberOfShips: 1,
       shipSize: 4,
-    },
-
-    getShip: (index) => {
-      let i = 0;
-      for (const shipSettings in CFG.GridSettings) {
-        if (index === i) return CFG.GridSettings[shipSettings];
-        i++;
-      }
-    },
-  };
+    }
+  }
 }
