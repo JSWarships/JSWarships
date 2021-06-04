@@ -15,4 +15,5 @@ Game continues until someone kills all the enemy's ships.
 Current project plans:
 
 >Player vs Player gameplay
+
 >Bot vs Bot for fun
