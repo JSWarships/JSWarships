@@ -39,7 +39,8 @@ class RandomPlacer {
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
     let cell = GameEnviroment.Cells[player][coords.x][coords.y];
-    this.cleanGrid(player);
+    //this.cleanGrid(player);
+    GameEnviroment.startSea(player);
     for (const shipSettingKey in GridSettings) {
       const shipSetting = GridSettings[shipSettingKey];
       if (shipSetting === GridSettings.getShip()) return;
@@ -61,7 +62,7 @@ class RandomPlacer {
 
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
         GameEnviroment.addShipCell(cell, player, null);
-        ship.addCell(cell);
+        ship.addCell(new Cell(cell.localPosition.x, cell.localPosition.y, player));
         if (player === PlayerType.Player1) {
           GameEnviroment.drawRectangle(
             cell.localPosition,
@@ -77,7 +78,7 @@ class RandomPlacer {
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
           cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
 
-          ship.addCell(cell);
+          ship.addCell(new Cell(cell.localPosition.x, cell.localPosition.y, player));
           GameEnviroment.addShipCell(cell, player, lastCellPos);
           if (player === PlayerType.Player1) {
             GameEnviroment.drawRectangle(

@@ -88,15 +88,9 @@ class GameEnviroment {
 
   static drawGrid(size) {
     this.clearSea();
-    for (let player = 0; player < 2; player++) {
-      this.Cells[player] = [];
-      for (let i = 0; i < size; i++) {
-        this.Cells[player][i] = [];
-        for (let j = 0; j < size; j++) {
-          this.drawRectangle(new Vector2(i, j), player, 'LightCyan');
-          this.Cells[player][i].push(new Cell(i, j, player));
-        }
-      }
+    for (let player = 0; player < 2; player++)
+    {
+      this.startSea(player);
     }
   }
 
@@ -199,12 +193,13 @@ class GameEnviroment {
         }
       }
 
-      this.surroundCell(new Vector2(x, y), player, false, CellType.Blocked);
+     // this.surroundCell(new Vector2(x, y), player, false, CellType.Blocked);
     }
     for (let i = -1; i < 2; i += 2) {
       for (let j = -1; j < 2; j += 2) {
         if (checkBounds(x + i, y + j))
-          this.Cells[player][x + i][y + j].cellType = CellType.Blocked;
+        {}
+          //this.Cells[player][x + i][y + j].cellType = CellType.Blocked;
       }
     }
   }
@@ -256,11 +251,22 @@ class GameEnviroment {
       }
     }
   }
-
+  static startSea(player)
+  {
+      this.Ships[player] = [];
+      this.Cells[player] = [];
+      for(let i = 0; i< GRID_SIZE; i++)
+      {
+        this.Cells[player][i] = [];
+        for(let j = 0; j<GRID_SIZE;j++)
+        {
+          this.Cells[player][i].push(new Cell(i, j, player));
+          this.drawRectangle(new Vector2(i, j), player, 'LightCyan');
+        }
+    }
+  }
   static clearSea = () => {
     ctx.clearRect(0, 0, 700, 300);
-    this.Ships[0] = [];
-    this.Ships[1] = [];
   };
 
   static getShip(position, player) {
@@ -303,8 +309,8 @@ class GameEnviroment {
     cell.cellType = CellType.Damaged;
     result = 'Damaged';
     this.drawRectangle(cell.localPosition, player, 'red');
-    console.log(cell.localPosition);
     const ship = this.getShip(cell.localPosition, player);
+    console.log(ship);
     ship.killCell(cell.localPosition);
     if (!ship.checkAlive()) {
       result = 'Aimed';
@@ -315,7 +321,25 @@ class GameEnviroment {
   static shot(x, y, player) {
     let result;
     const cell = this.Cells[player][x][y];
-    switch (cell.cellType) {
+    const ship = this.getShip(cell.localPosition, player);
+    if(!ship)
+    {
+      if(cell.cellType === CellType.Empty || cell.cellType == CellType.Blocked)
+      {
+        return this.miss(cell, player);
+      }
+      else
+      {
+        return 'Error';
+      }
+    }
+
+    if(cell.cellType === CellType.Damaged)
+    {
+      return 'Error';
+    }
+    result = this.hit(cell, player);
+    /*switch (cell.cellType) {
     case CellType.Occupied:
       result = this.hit(cell, player);
       break;
@@ -327,7 +351,7 @@ class GameEnviroment {
     default:
       result = this.miss(cell, player);
       break;
-    }
+    }*/
     if (result === 'Aimed') {
       this.surroundKilledShip(this.getShip(new Vector2(x, y), player), player);
     }
