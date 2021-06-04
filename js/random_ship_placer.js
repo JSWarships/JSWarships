@@ -11,7 +11,7 @@ class RandomPlacer {
         if (checkBounds(positionToCheck.x, positionToCheck.y))
           if (
             GameEnviroment.getCell(player, positionToCheck).cellType ===
-            CFG.CellType.Empty
+            CellType.Empty
           )
             possibleCellsNumber[j]++;
       }
@@ -25,18 +25,18 @@ class RandomPlacer {
 
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
-    let cell = GameEnviroment.Cells[player][coords.x][coords.y];
     GameEnviroment.startSea(player);
-    for (const shipSettingKey in CFG.GridSettings) {
-      const shipSetting = CFG.GridSettings[shipSettingKey];
-      if (shipSetting === CFG.GridSettings.getShip()) return;
+    console.log(GameEnviroment.Cells[player][coords.x]);
+    let cell = GameEnviroment.Cells[player][coords.x][coords.y];
+    for (const shipSettingKey in CFG.gridSettings) {
+      const shipSetting = CFG.gridSettings[shipSettingKey];
       for (let i = 0; i < shipSetting.numberOfShips; i++) {
         const ship = new Ship(shipSetting.shipSize);
         let possibleDirections;
         while (true) {
           coords = new Vector2(
-            Math.floor(Math.random() * CFG.GridSize),
-            Math.floor(Math.random() * CFG.GridSize)
+            Math.floor(Math.random() * CFG.gridSize),
+            Math.floor(Math.random() * CFG.gridSize)
           );
           possibleDirections = this.getPossibleDirections(
             coords,
@@ -49,11 +49,11 @@ class RandomPlacer {
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
         GameEnviroment.addShipCell(cell, player, null);
         ship.addCell(new Cell(cell.localPosition.x, cell.localPosition.y, player));
-        if (player === CFG.PlayerType.Player1) {
+        if (player === PlayerType.Player1) {
           GameEnviroment.drawRectangle(
             cell.localPosition,
             player,
-            CFG.Colors[CFG.CellType.Occupied]
+            CFG.colors[CellType.Occupied]
           );
         }
         let lastCellPos = cell.localPosition;
@@ -69,11 +69,11 @@ class RandomPlacer {
             new Cell(cell.localPosition.x, cell.localPosition.y, player)
           );
           GameEnviroment.addShipCell(cell, player, lastCellPos);
-          if (player === CFG.PlayerType.Player1) {
+          if (player === PlayerType.Player1) {
             GameEnviroment.drawRectangle(
               cell.localPosition,
               player,
-              CFG.Colors[CFG.CellType.Occupied]
+              CFG.colors[CellType.Occupied]
             );
           }
           lastCellPos = cell.localPosition;
@@ -85,4 +85,3 @@ class RandomPlacer {
   }
 }
 
-//module.exports = RandomPlacer;

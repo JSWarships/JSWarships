@@ -1,7 +1,7 @@
 'use strict';
 
 const emit = new EventEmitter();
-const player = new Player(emit, CFG.PlayerType.Player1);
+const player = new Player(emit, PlayerType.Player1);
 const bot = new Bot(emit);
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -17,7 +17,7 @@ function PlayWithBot() {
   GameUI.startButtonsHide();
   GameEnviroment.drawGrid();
   initializePlayers();
-  GameEnviroment.GameState = CFG.GameState.FillingGrid;
+  GameEnviroment.GameState = GameState.FillingGrid;
   setTimeout(() => {
     player.start();
     bot.start();

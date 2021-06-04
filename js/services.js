@@ -28,22 +28,31 @@ class Vector2 {
 }
 
 const deltaVector = new Vector2(
-  CFG.Canvas.offsetLeft + CFG.Canvas.clientLeft,
-  CFG.Canvas.offsetTop + CFG.Canvas.clientTop
+  CFG.canvas.offsetLeft + CFG.canvas.clientLeft,
+  CFG.canvas.offsetTop + CFG.canvas.clientTop
 );
 
 const checkBounds = (x, y) => {
   if (x < 0 || y < 0) return false;
-  return x < CFG.GridSize && y < CFG.GridSize;
+  return x < CFG.gridSize && y < CFG.gridSize;
 };
 
 class Cell {
   constructor(x, y, player) {
     this.position = new Vector2(
-      player * CFG.PlayerMargin + x * CFG.Dxy + deltaVector.x,
-      y * CFG.Dxy + deltaVector.y
+      player * CFG.playerMargin + x * CFG.dxy + deltaVector.x,
+      y * CFG.dxy + deltaVector.y
     );
     this.localPosition = new Vector2(x, y);
-    this.cellType = CFG.CellType.Empty;
+    this.cellType = CellType.Empty;
   }
 }
+
+const getShip  = (index) =>
+{
+  let i = 0;
+  for (const shipSettings in CFG.gridSettings) {
+    if (index === i) return CFG.gridSettings[shipSettings];
+    i++;
+  }
+};
