@@ -1,13 +1,13 @@
 class GameUI {
-  static show ( element ) {
+  static show(element) {
     element.style.visibility = 'visible';
     element.style.opacity = 1;
   }
-  static hide ( element ) {
+  static hide(element) {
     element.style.visibility = 'hidden';
     element.style.opacity = 0;
   }
-  static clear ( element ) {
+  static clear(element) {
     element.innerHTML = '';
     element.innerText = '';
   }
@@ -57,15 +57,19 @@ class GameUI {
   }
   static placeButtons() {
     GameUI.clear(GameUI.container);
-    GameUI.container.appendChild(GameUI.buttonCreator('Start', 'start', GM.startGame));
+    GameUI.container.appendChild(
+      GameUI.buttonCreator('Start', 'start', GM.startGame)
+    );
     GameUI.container.appendChild(
       GameUI.buttonCreator('Random', 'random', GM.fillRandom)
     );
-    GameUI.container.appendChild(GameUI.buttonCreator('Reset', 'rest', GM.shipsReset));
+    GameUI.container.appendChild(GameUI.
+      buttonCreator('Reset', 'rest', GM.shipsReset)
+    );
     GameUI.container.id = 'game';
     GameUI.show(GameUI.container);
   }
-  static showScore () {
+  static showScore() {
     GameUI.clear(GameUI.container);
     GameUI.score = document.createElement('h2');
     GameUI.container.appendChild(GameUI.score);
@@ -75,18 +79,19 @@ class GameUI {
   static updateScore() {
     const botScore = GameEnviroment.Bot.score;
     const playerScore = GameEnviroment.Player.score;
-    if ( botScore < 9 && playerScore < 9 ) GameUI.score.innerText = `${botScore} - ${playerScore}`;
+    if (botScore < 9 && playerScore < 9)
+      GameUI.score.innerText = `${botScore} - ${playerScore}`;
     else {
-        GameUI.hide(GameUI.container);
-        GameEnviroment.GameState = 2;
-        switch ( botScore ) {
-          case 9:
-            GameUI.textDrawer('Bot WON!');
-            break;
-          default:
-            GameUI.textDrawer('Player WON!');
-            break;
-        }
+      GameUI.hide(GameUI.container);
+      GameEnviroment.GameState = 2;
+      switch (botScore) {
+      case 9:
+        GameUI.textDrawer('Bot WON!');
+        break;
+      default:
+        GameUI.textDrawer('Player WON!');
+        break;
+      }
     }
   }
 }
