@@ -43,7 +43,6 @@ class Bot {
     let hit;
     if (this.nextattack && this.lastAttacked) {
       const temporary = this.nextattack;
-      console.log(`x: ${temporary[0]} y: ${temporary[1]}`)
       this.nextattack = null;
       hit = GameEnviroment.shot(temporary[0], temporary[1], PlayerType.Player1);
       if (hit == 'Damaged') {
