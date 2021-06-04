@@ -1,55 +1,13 @@
-const PlayerType = {
-  Player2: 0,
-  Player1: 1,
-};
-
-const GameState = {
-  FillingGrid: 0,
-  Fighting: 1,
-};
-
-//const config = ConfigManager.getConfig();
-const SHIP_ALIVE_COLOR = 'DeepSkyBlue'; //config.ShipAliveColor;
-const MAX_SHIP_DECKS = 4; //config.MaxShipDecks;
-//const PLAYER = GameEnviroment.Player;
-
-const GridSettings = {
-  OneDeck: {
-    numberOfShips: 4,
-    shipSize: 1,
-  },
-
-  TwoDeck: {
-    numberOfShips: 2,
-    shipSize: 2,
-  },
-
-  ThreeDeck: {
-    numberOfShips: 2,
-    shipSize: 3,
-  },
-
-  FourDeck: {
-    numberOfShips: 1,
-    shipSize: 4,
-  },
-
-  getShip: index => {
-    let i = 0;
-    for (const shipSettings in GridSettings) {
-      if (index === i) return GridSettings[shipSettings];
-      i++;
-    }
-  },
-};
+'use strict';
 
 const fillByPlayer = cell => {
   const playerShip = GameEnviroment.Player.currentShip;
   if (GameEnviroment.Player.isFillingByPlayer) {
-    const currShipType = GridSettings.getShip(GameEnviroment.Player.currentShipIndex);
+    const currShipType = CFG.GridSettings.
+      getShip(GameEnviroment.Player.currentShipIndex);
     if (GM.areAllShips()) return;
 
-    if (cell.cellType === CellType.Occupied) {
+    if (cell.cellType === CFG.CellType.Occupied) {
       console.warn('Occupied');
       return;
     }
@@ -60,32 +18,36 @@ const fillByPlayer = cell => {
       GameEnviroment.drawRectangle(
         cell.localPosition,
         player.playerType,
-        SHIP_ALIVE_COLOR
+        CFG.Colors[CFG.CellType.Occupied]
       );
     };
 
     if (!GameEnviroment.Player.currentShip) {
-      if (cell.cellType === CellType.Empty) {
+      if (cell.cellType === CFG.CellType.Empty) {
         GameEnviroment.Player.currentShip = new Ship(currShipType.shipSize);
         addCellToEnviroment(null);
       } else return;
     }
 
-    if (cell.cellType === CellType.Potential) {
+    if (cell.cellType === CFG.CellType.Potential) {
       const celsInShip = playerShip.cells.length;
       addCellToEnviroment(playerShip.cells[celsInShip - 1].localPosition);
     }
 
-    if (player.currentShip.cells.length === currShipType.shipSize) {
+    if (
+      GameEnviroment.Player.currentShip.cells.length === currShipType.shipSize
+    ) {
       GameEnviroment.Player.currentShipNumber++;
-      GameEnviroment.addShip(PlayerType.Player1, GameEnviroment.Player.currentShip);
+      GameEnviroment.addShip(
+        CFG.PlayerType.Player1, GameEnviroment.Player.currentShip
+      );
       GameEnviroment.refreshSea(GameEnviroment.Player.playerType);
       console.log('refreshed');
       GameEnviroment.Player.currentShip = null;
     }
 
     if (GameEnviroment.Player.currentShipNumber === currShipType.numberOfShips) {
-      if (GameEnviroment.Player.currentShipIndex === MAX_SHIP_DECKS - 1) {
+      if (GameEnviroment.Player.currentShipIndex === CFG.MaxShipDecks - 1) {
         return;
       }
       GameEnviroment.Player.currentShipIndex++;
@@ -99,20 +61,20 @@ const onPlayerClick = mousePos => {
   let cell = GameEnviroment.findClickedCell(
     mousePos.pageX,
     mousePos.pageY,
-    PlayerType.Player1
+    CFG.PlayerType.Player1
   );
   switch (GameEnviroment.GameState) {
-  case GameState.FillingGrid:
+  case CFG.GameState.FillingGrid:
     if (GameEnviroment.Player.isFillingByPlayer) {
       if (!cell) return;
       fillByPlayer(cell);
     }
     break;
-  case GameState.Fighting:
+  case CFG.GameState.Fighting:
     cell = GameEnviroment.findClickedCell(
       mousePos.pageX,
       mousePos.pageY,
-      PlayerType.Player2
+      CFG.PlayerType.Player2
     );
     if (!cell) return;
     GameEnviroment.Player.attackCell(cell.localPosition);
@@ -142,18 +104,17 @@ class Player {
     const hit = GameEnviroment.shot(
       cellPosition.x,
       cellPosition.y,
-      PlayerType.Player2
+      CFG.PlayerType.Player2
     );
     if (hit === 'Error') return;
     GameUI.textDrawer('You ' + hit);
-    if (hit == 'Aimed') {
+    if (hit === 'Aimed') {
       this.score++;
       GameUI.updateScore();
     }
-    if(hit == 'Missed')
-    {
+    if (hit === 'Missed') {
       GameEnviroment.Bot.onPlayerAttacked();
-      GameEnviroment.GameState = GameState.FillingGrid;
+      GameEnviroment.GameState = CFG.GameState.FillingGrid;
     }
   }
 

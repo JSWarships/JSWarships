@@ -13,7 +13,7 @@ class RandomPlacer {
         if (checkBounds(positionToCheck.x, positionToCheck.y))
           if (
             GameEnviroment.getCell(player, positionToCheck).cellType ===
-            CellType.Empty
+            CFG.CellType.Empty
           )
             possibleCellsNumber[j]++;
       }
@@ -25,32 +25,20 @@ class RandomPlacer {
     return possibleDirections;
   }
 
-  static cleanGrid(player) {
-    const coords = new Vector2(0, 0);
-    const Cells = GameEnviroment.Cells;
-    for (let i = 0; i < 10; i++) {
-      for (let j = 0; j < 10; j++) {
-        Cells[player][i][j].cellType = CellType.Empty;
-        GameEnviroment.drawRectangle(new Vector2(i, j), player, 'LightCyan');
-      }
-    }
-  }
-
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
     let cell = GameEnviroment.Cells[player][coords.x][coords.y];
-    //this.cleanGrid(player);
     GameEnviroment.startSea(player);
-    for (const shipSettingKey in GridSettings) {
-      const shipSetting = GridSettings[shipSettingKey];
-      if (shipSetting === GridSettings.getShip()) return;
+    for (const shipSettingKey in CFG.GridSettings) {
+      const shipSetting = CFG.GridSettings[shipSettingKey];
+      if (shipSetting === CFG.GridSettings.getShip()) return;
       for (let i = 0; i < shipSetting.numberOfShips; i++) {
         const ship = new Ship(shipSetting.shipSize);
         let possibleDirections;
         while (true) {
           coords = new Vector2(
-            Math.floor(Math.random() * GRID_SIZE),
-            Math.floor(Math.random() * GRID_SIZE)
+            Math.floor(Math.random() * CFG.GridSize),
+            Math.floor(Math.random() * CFG.GridSize)
           );
           possibleDirections = this.getPossibleDirections(
             coords,
@@ -63,28 +51,31 @@ class RandomPlacer {
         cell = GameEnviroment.Cells[player][coords.x][coords.y];
         GameEnviroment.addShipCell(cell, player, null);
         ship.addCell(new Cell(cell.localPosition.x, cell.localPosition.y, player));
-        if (player === PlayerType.Player1) {
+        if (player === CFG.PlayerType.Player1) {
           GameEnviroment.drawRectangle(
             cell.localPosition,
             player,
-            SHIP_ALIVE_COLOR
+            CFG.Colors[CFG.CellType.Occupied]
           );
         }
         let lastCellPos = cell.localPosition;
         const direction =
           possibleDirections[
-            Math.floor(Math.random() * possibleDirections.length)
+            Math.floor(Math.random() *
+            possibleDirections.length)
           ];
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
           cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
 
-          ship.addCell(new Cell(cell.localPosition.x, cell.localPosition.y, player));
+          ship.addCell(
+            new Cell(cell.localPosition.x, cell.localPosition.y, player)
+          );
           GameEnviroment.addShipCell(cell, player, lastCellPos);
-          if (player === PlayerType.Player1) {
+          if (player === CFG.PlayerType.Player1) {
             GameEnviroment.drawRectangle(
               cell.localPosition,
               player,
-              SHIP_ALIVE_COLOR
+              CFG.Colors[CFG.CellType.Occupied]
             );
           }
           lastCellPos = cell.localPosition;
