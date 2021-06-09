@@ -19,23 +19,6 @@ class RandomPlacer {
     }
     return possibleDirections;
   }
-  
-    static increaseShip (player, direction, ship, lastCellPos) {
-      let cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
-      ship.addCell(
-          new Cell(cell.localPosition.x, cell.localPosition.y, player)
-      );
-      GameEnviroment.addShipCell(cell, player, lastCellPos);
-      if (player === CFG.PlayerType.Player1) {
-        GameEnviroment.drawRectangle(
-            cell.localPosition,
-            player,
-            CFG.Colors[CFG.CellType.Occupied]
-        );
-      }
-      lastCellPos = cell.localPosition;
-      return lastCellPos;
-  }
 
   static fillGridRandom(player) {
     let coords = new Vector2(0, 0);
@@ -77,7 +60,20 @@ class RandomPlacer {
             possibleDirections.length)
           ];
         for (let j = 0; j < shipSetting.shipSize - 1; j++) {
-          lastCellPos = this.increaseShip(player, direction, ship, lastCellPos);
+          cell = GameEnviroment.getCell(player, lastCellPos.add(direction));
+
+          ship.addCell(
+            new Cell(cell.localPosition.x, cell.localPosition.y, player)
+          );
+          GameEnviroment.addShipCell(cell, player, lastCellPos);
+          if (player === PlayerType.Player1) {
+            GameEnviroment.drawRectangle(
+              cell.localPosition,
+              player,
+              CFG.colors[CellType.Occupied]
+            );
+          }
+          lastCellPos = cell.localPosition;
         }
         GameEnviroment.addShip(player, ship);
         GameEnviroment.refreshSea(player);
